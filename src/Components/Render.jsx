@@ -2,6 +2,7 @@ import React, { useEffect } from 'react'
 import Message from './Message'
 import { useState } from 'react'
 import './components.css'
+import Thread from './Thread'
 const Render = () => {
   var urlLink = window.location.href;
   var fl = urlLink.length;
@@ -21,10 +22,10 @@ var year = dateObj.getUTCFullYear();
 let y,m,d;
 let temp = []
 console.log(Swarga)
-for(y=year-3;y<=year;y++){
+for(y=year;y<=year;y++){
 for( m=1;m<=12;m++){
     for( d=1;d<=31;d++){
-let url = `http://localhost:3000/data/${Swarga}/${y}-${m}-${d}.json` ;
+let url = `http://localhost:3000/data/${Swarga}/${y}-0${m}-${d}.json` ;
         // console.log(m)
         try {
             let testdata = await fetch(url);
@@ -56,20 +57,38 @@ trialFetch(urlLink.slice(22,fl));
 },[])
   return (
     <div className='dataContent'>
+    <div style={{marginLeft:'6rem'}}>
     {
       test.map((element) => {    //     const filterArray = element.filter((element,id) => 
       //     element.id !== id);
       //     setArticles(filterArray);
   // for(let i=0;i<list.length;i++){
+    try{
+      
+      console.log(element.user_profile.real_name)
+    
+    
                           return( 
                               
 //   <h2>Hello</h2>
           // <h1 key={element.id}>{element.id}</h1>
-          <Message user={element['user']} message={element.text} time={element.thread_ts}/>
+         <>
+                          {/*<Message user={element['user']} message={element.text} time={element.thread_ts}/>*/}
+          <Message user={element.user_profile.real_name} message={element.text} time={element.thread_ts} avatar={element.user_profile.image_72}/>
+          
+        </>
           )
+                          }
+                          catch(err){
+                            console.log('error occured');
+                          }
                           // }
+                        
       })
       } 
+      
+      </div>
+     
     </div>
   )
 }

@@ -3,6 +3,7 @@ import Channel from './Channel'
 import './components.css'
 
 import Render from './Render'
+import Thread from './Thread'
 const Sidebar = () => {
 
     let list = []
@@ -11,7 +12,7 @@ const Sidebar = () => {
    const [save, setSave] = useState([])
     let lis = [0,1]
     const updateNews = async ()=>{
-        const url = "http://localhost:3000/c.json";
+        const url = "http://localhost:3000/data/channels.json";
         let data = await fetch(url);
         let parsedData = await data.json()
         setArticles(parsedData);
@@ -69,6 +70,7 @@ console.log(test);
         <div style={{display:'flex'}}>
             <div className="w3-sidebar w3-bar-block w3-light-grey w3-card" style={{width:"15%"}}>
            {articles.map((element) => {
+            //    console.log(element);
                             return <>
                             <div>
                                 <Channel name={element.name}/>
@@ -79,11 +81,16 @@ console.log(test);
             </div> 
        
             <div className='dataContent'>
-            
-            
-    
-        {/*<Render/>*/}
-              
+            <h1>Slack Archives</h1>
+            <div style={{display:'flex'}}>
+    <div className='ren'>
+    <Render/>
+  
+    </div>
+      <div style={{overflowY:'scroll', width:'23rem', overflowX:'hidden'}}>
+      <Thread/>
+      </div> 
+    </div>
            
             </div>
             </div>

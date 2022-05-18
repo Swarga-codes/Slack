@@ -4,9 +4,53 @@
     height: auto;
 }
 .dataContent{
-    margin-left: 16rem;
+
     margin-top: 2rem;
+/* margin-left: mrem; */
 }
-body{
-    background-color: #27242C;
+.dataContent h1{
+    margin-left: 20rem;
+    font-weight: bolder;
+}
+.dataContent h5{
+    font-weight: bolder;
+    font-size: 16px;
+}
+.Card{
+    border: none;
+    display: flex;
+    margin-left: 16rem;
+    width: 55%;
+}
+.ren{
+    width: 70rem;
+    overflow-y: scroll;
+    height: 100vh;
+}
+/* .ren{
+    overflow-y: scroll;
+    height: 100vh;
+} */
+.Card img{
+    margin-right: 1rem;
+    margin-top: 0.6rem;
+    width: 3rem;
+}
+span{
+    color: grey;
+    font-weight: 600;
+    font-size: 14px;
+    margin-left: 1rem;
+}
+.thread{
+   
+    
+    margin-left: 2rem;
+    /* margin-right: 29rem; */
+    /* width: 2rem; */
+    width: 33rem;
+
+}
+.threadmess {
+    margin-top: 1rem;
 }
