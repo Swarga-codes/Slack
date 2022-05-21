@@ -81,10 +81,23 @@ console.log(test);
             </div> 
        
             <div className='dataContent'>
+            <div className="Navbar">
+            <div className="navHead">
             <h1>Slack Archives</h1>
+            </div>
+            <div class="Search">
+            <div class="container-fluid">
+              <form class="d-flex" role="search">
+                <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search"/>
+                <button class="btn btn-outline-primary" type="submit">Search</button>
+              </form>
+            </div>
+          </div>
+            </div>
+         
             <div style={{display:'flex'}}>
     <div className='ren'>
-    <Render/>
+    <Render/>   
   
     </div>
       <div style={{overflowY:'scroll', width:'23rem', overflowX:'hidden'}}>

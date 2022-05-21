@@ -25,7 +25,7 @@ console.log(Swarga)
 for(y=year;y<=year;y++){
 for( m=1;m<=12;m++){
     for( d=1;d<=31;d++){
-let url = `http://localhost:3000/data/${Swarga}/${y}-0${m}-${d}.json` ;
+let url = `http://localhost:3000/data/${Swarga}/2022-04-07.json` ;
         // console.log(m)
         try {
             let testdata = await fetch(url);
@@ -69,18 +69,23 @@ trialFetch(urlLink.slice(22,fl));
     
     
                           return( 
-                              
-//   <h2>Hello</h2>
-          // <h1 key={element.id}>{element.id}</h1>
+
          <>
-                          {/*<Message user={element['user']} message={element.text} time={element.thread_ts}/>*/}
+                         
+
           <Message user={element.user_profile.real_name} message={element.text} time={element.thread_ts} avatar={element.user_profile.image_72}/>
           
         </>
+        
+       
+
+
+                              
           )
                           }
                           catch(err){
                             console.log('error occured');
+                          
                           }
                           // }
                         

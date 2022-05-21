@@ -34,6 +34,7 @@ catch(err){
 
     <div className="Card mb-5" >
     <div>
+    {console.log(props.thread)}
     <img src={props.avatar} className="card-img-top" alt="..."/>
     </div>
     <div className="card-body">
@@ -50,6 +51,7 @@ catch(err){
     </div>
   </div>
   
+
   )
 }
 
