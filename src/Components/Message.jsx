@@ -1,29 +1,55 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useRef } from 'react';
 import './components.css'
 const Message = (props) => {
-  var date;
-  const TimeConv = (time) => {
-    date = new Date(time);
-    console.log(date)
+  const[times, setTimes] = useState(0);
+  // var date;
+  // const TimeConv = (time) => {
+  //   date = new Date(time);
+  //   console.log(date)
+  let timestamp = parseInt(props.time);
+  let date = new Date(timestamp);
+  try{
 
-  }
-  useEffect(()=>{
-    // TimeConv(date);
-  },[])
+  console.log(props.time)
+ 
+
+
+  
+  
+  console.log(""+date.getDate()+
+            "/"+(date.getMonth()+1)+
+            "/"+date.getFullYear()+
+            " "+date.getHours()+
+            ":"+date.getMinutes()+
+            ":"+date.getSeconds());
+            console.log(date.getMonth());
+            // setTimes(date)
+}
+catch(err){
+  console.log('no time')
+}
+  
   return (
+
     <div className="Card mb-5" >
     <div>
     <img src={props.avatar} className="card-img-top" alt="..."/>
     </div>
     <div className="card-body">
-    <h5 className="card-title">{props.user}  <span className="card-text"><small className="text-muted">{props.time}</small></span></h5>
+    <h5 className="card-title">{props.user}  <span className="card-text"><small className="text-muted">{date.getDate()+
+      "/"+(date.getMonth()+1)+
+      "/"+date.getFullYear()+
+      " "+date.getHours()+
+      ":"+date.getMinutes()+
+      ":"+date.getSeconds()}</small></span></h5>
     
       <p className="card-text">{props.message}</p>
     
    
     </div>
   </div>
+  
   )
 }
 

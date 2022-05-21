@@ -3,6 +3,18 @@
     overflow:scroll;
     height: auto;
 }
+body{
+    overflow: hidden;
+}
+html {
+    scrollbar-width: none; /* For Firefox */
+    -ms-overflow-style: none; /* For Internet Explorer and Edge */
+    }
+    ​
+    html::-webkit-scrollbar {
+    width: 0px; /* For Chrome, Safari, and Opera */
+    }
+    
 .dataContent{
 
     margin-top: 2rem;
@@ -25,7 +37,7 @@
 .ren{
     width: 70rem;
     overflow-y: scroll;
-    height: 100vh;
+    height: 86vh;
 }
 /* .ren{
     overflow-y: scroll;
