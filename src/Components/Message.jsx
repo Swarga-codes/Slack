@@ -1,8 +1,14 @@
 import React, { useEffect, useState } from 'react'
 import { useRef } from 'react';
 import './components.css'
+import Thread from './Thread';
 const Message = (props) => {
-  const[times, setTimes] = useState(0);
+  const [components, setComponents] = useState([]); 
+  const[times, setTimes] = useState([]);
+  let list = []
+  // const[tdata, setTdata] = useState([]);
+  // setTdata(props.data)
+  // console.log(tdata)
   // var date;
   // const TimeConv = (time) => {
   //   date = new Date(time);
@@ -11,30 +17,37 @@ const Message = (props) => {
   let date = new Date(timestamp);
   try{
 
-  console.log(props.time)
- 
+  // console.log(props.time)
 
-
+var n = [0,1]
   
   
-  console.log(""+date.getDate()+
-            "/"+(date.getMonth()+1)+
-            "/"+date.getFullYear()+
-            " "+date.getHours()+
-            ":"+date.getMinutes()+
-            ":"+date.getSeconds());
-            console.log(date.getMonth());
-            // setTimes(date)
+//   console.log(""+date.getDate()+
+//             "/"+(date.getMonth()+1)+
+//             "/"+date.getFullYear()+
+//             " "+date.getHours()+
+//             ":"+date.getMinutes()+
+//             ":"+date.getSeconds());
+//             console.log(date.getMonth());
+//             // setTimes(date)
 }
 catch(err){
   console.log('no time')
 }
+function addComponent(e) { 
+  // refclose.current.click();
   
+  setComponents(props.data) 
+  // console.log(components)
+  document.getElementById('thred').innerHTML = 'Thread';
+    // thread_ts && parent_user_id
+  e.preventDefault();
+  
+} 
   return (
 
     <div className="Card mb-5" >
     <div>
-    {console.log(props.thread)}
     <img src={props.avatar} className="card-img-top" alt="..."/>
     </div>
     <div className="card-body">
@@ -47,11 +60,39 @@ catch(err){
     
       <p className="card-text">{props.message}</p>
     
-   
+    {props.thread ? <button style={{border:"2px solid red"}} onClick={addComponent}>View Thread</button> : <h4></h4>}
+    <h2 id='thred'></h2>
+      {/* {components.map((item) => {
+        return( 
+        
+          <div style={{overflowY:'scroll', width:'40%', overflowX:'hidden'}}>
+          <Thread />
+          </div>
+        
+        )
+        })}  */}
+
+{components.map((elmt)=>{
+      if ( props.thread == elmt.thread_ts  && props.userid == elmt.parent_user_id ) {
+      
+        try{
+                              return( 
+                                <>
+                <Thread user={elmt.user_profile.real_name} message={elmt.text} time={elmt.thread_ts} avatar={elmt.user_profile.image_72} />
+              
+            </>
+              )
+                              }
+                              catch(err){
+                                console.log('error occured');
+                              }
+      }
+      // props.thread 
+      
+    })}
     </div>
   </div>
   
-
   )
 }
 

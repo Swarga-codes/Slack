@@ -8,10 +8,9 @@ function App() {
    <>
   <Router>
   
-
+    <Sidebar />
     <Routes>
     <Route exact path='/' element={<Welcome/>}/>
-    <Route exact path='/backup' element={<Sidebar/>}/>
   {/*<Route path='*' element={<Render/>}/>*/}
     <Route path='/home' element={<Home/>}/>
     </Routes>

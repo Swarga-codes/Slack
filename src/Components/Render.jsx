@@ -25,7 +25,7 @@ console.log(Swarga)
 for(y=year;y<=year;y++){
 for( m=1;m<=12;m++){
     for( d=1;d<=31;d++){
-let url = `http://localhost:3000/data/${Swarga}/2022-04-07.json` ;
+let url = `https://slackbackup.netlify.app/data/${Swarga}/${y}-0${m}-${d}.json` ;
         // console.log(m)
         try {
             let testdata = await fetch(url);
@@ -59,38 +59,37 @@ trialFetch(urlLink.slice(22,fl));
     <div className='dataContent'>
     <div style={{marginLeft:'6rem'}}>
     {
-      test.map((element) => {    //     const filterArray = element.filter((element,id) => 
+      test.map((element,list,test,count) => {    //     const filterArray = element.filter((element,id) => 
       //     element.id !== id);
       //     setArticles(filterArray);
   // for(let i=0;i<list.length;i++){
+    if (!element.parent_user_id) {
+      
+    
     try{
       
-      console.log(element.user_profile.real_name)
+      // console.log(test)
     
-    
+  
                           return( 
-
+                              
+//   <h2>Hello</h2>
+          // <h1 key={element.id}>{element.id}</h1>
          <>
-                         
-
-          <Message user={element.user_profile.real_name} message={element.text} time={element.thread_ts} avatar={element.user_profile.image_72}/>
+                          {/*<Message user={element['user']} message={element.text} time={element.thread_ts}/>*/}
+          <Message nreq={test.length} userid={element.user} user={element.user_profile.real_name} message={element.text} time={element.thread_ts} avatar={element.user_profile.image_72} data={test} thread={element.thread_ts > 1 ? element.thread_ts : 0}/>
           
         </>
-        
-       
-
-
-                              
           )
                           }
                           catch(err){
                             console.log('error occured');
-                          
                           }
                           // }
                         
-      })
-      } 
+                        }   })
+      }
+    
       
       </div>
      

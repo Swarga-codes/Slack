@@ -12,7 +12,7 @@ const Sidebar = () => {
    const [save, setSave] = useState([])
     let lis = [0,1]
     const updateNews = async ()=>{
-        const url = "http://localhost:3000/data/channels.json";
+        const url = "https://slackbackup.netlify.app/data/channels.json";
         let data = await fetch(url);
         let parsedData = await data.json()
         setArticles(parsedData);
@@ -33,7 +33,7 @@ let temp = []
 for(y=year-1;y<=year;y++){
     for( m=1;m<=12;m++){
         for( d=1;d<=31;d++){
-    let url = `http://localhost:3000/data/agency-life/${y}-${m}-${d}.json` ;
+    let url = `https://slackbackup.netlify.app/data/agency-life/${y}-${m}-${d}.json` ;
             // console.log(m)
             try {
                 let testdata = await fetch(url);
@@ -81,28 +81,15 @@ console.log(test);
             </div> 
        
             <div className='dataContent'>
-            <div className="Navbar">
-            <div className="navHead">
             <h1>Slack Archives</h1>
-            </div>
-            <div class="Search">
-            <div class="container-fluid">
-              <form class="d-flex" role="search">
-                <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search"/>
-                <button class="btn btn-outline-primary" type="submit">Search</button>
-              </form>
-            </div>
-          </div>
-            </div>
-         
             <div style={{display:'flex'}}>
     <div className='ren'>
-    <Render/>   
+    <Render/>
   
     </div>
-      <div style={{overflowY:'scroll', width:'23rem', overflowX:'hidden'}}>
+      {/* <div style={{overflowY:'scroll', width:'23rem', overflowX:'hidden'}}>
       <Thread/>
-      </div> 
+      </div>  */}
     </div>
            
             </div>

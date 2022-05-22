@@ -1,36 +1,14 @@
-import React, { useEffect, useState } from 'react'
-import Channel from './Channel';
-import './components.css'
+import React from 'react'
+
 const Welcome = () => {
-  const[articles, setArticles] = useState([]);
-  const updateNews = async ()=>{
-    const url = "http://localhost:3000/data/channels.json";
-    let data = await fetch(url);
-    let parsedData = await data.json()
-    setArticles(parsedData);
-}
-useEffect(()=>{
-  updateNews();
-},[])
   return (
-   
-  <div className="Welcome">
- 
-  <h1>Categories</h1>
-  {articles.map((elements) => {
-    return(
-    <div className="WelCards">
-    <div className="card">
-    <div className="card-body">
-    <Channel name={elements.name}/>
+    <div style={{textAlign:'center',color:'#FFFFFF'}}>
+    
+    <h1>
+    Welcome
+    
+    </h1>
     </div>
-  </div>
-  
-    </div>
-    )
-  })}
- 
-  </div>
   )
 }
 
