@@ -39,7 +39,7 @@ let url = `https://slackbackup.netlify.app/data/${Swarga}/${y}-0${m}-${d}.json` 
             // console.log("helo"+temp)
             // }
             list.push(...testedData);
-        
+        console.log('data fetched succesfully...')
           } catch(err) {
             // catches errors both in fetch and response.json
         //   console.log('error')
