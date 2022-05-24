@@ -22,14 +22,14 @@ var year = dateObj.getUTCFullYear();
 let y,m,d;
 let temp = []
 console.log(Swarga)
-for(y=year;y<=year;y++){
-for( m=1;m<=12;m++){
-    for( d=1;d<=31;d++){
-let url = `https://slackbackup.netlify.app/data/${Swarga}/${y}-0${m}-${d}.json` ;
+// for(y=year;y<=year;y++){
+// for( m=1;m<=12;m++){
+//     for( d=1;d<=31;d++){
+// let url = `https://slackbackend.taparia11.repl.co/api/data/fetch${Swarga}` ;
         // console.log(m)
-        try {
-            let testdata = await fetch(url);
-            let testedData = await testdata.json();
+        // try {
+        //     let testdata = await fetch(url);
+        //     let testedData = await testdata.json();
             // let combo = test.concat(testedData);
             // if(temp!==save){
             // setSave(testedData)
@@ -38,22 +38,29 @@ let url = `https://slackbackup.netlify.app/data/${Swarga}/${y}-0${m}-${d}.json` 
             // temp=testedData;
             // console.log("helo"+temp)
             // }
-            list.push(...testedData);
-        console.log('data fetched succesfully...')
-          } catch(err) {
+            // list.push(...testedData);
+        // console.log('data fetched succesfully...')
+          // } catch(err) {
             // catches errors both in fetch and response.json
         //   console.log('error')
-          }
+          // }
        
-    }
-}
-}
+    // }
+// }
+// }
 // list.pop();
-setTest(list)
+// setTest(list)
 // console.log(test); 
+}
+const normalFetch = async(Swarga) => {
+let url = `https://slackbackend.taparia11.repl.co/api/data/fetch${Swarga}`
+let res = await fetch(url);
+let data = await res.json();
+setTest(data);
 }
 useEffect(()=>{
 trialFetch(urlLink.slice(22,fl));
+normalFetch(urlLink.slice(22,fl));
 },[])
   return (
     <div className='dataContent'>

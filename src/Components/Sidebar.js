@@ -12,7 +12,7 @@ const Sidebar = () => {
    const [save, setSave] = useState([])
     let lis = [0,1]
     const updateNews = async ()=>{
-        const url = "https://slackbackup.netlify.app/data/channels.json";
+        const url = "https://slackbackend.taparia11.repl.co/api/data/fetchallchannel";
         let data = await fetch(url);
         let parsedData = await data.json()
         setArticles(parsedData);
