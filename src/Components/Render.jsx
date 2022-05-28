@@ -3,6 +3,7 @@ import Message from './Message'
 import { useState } from 'react'
 import './components.css'
 import Thread from './Thread'
+import axios from 'axios'
 const Render = () => {
   var urlLink = window.location.href;
   var fl = urlLink.length;
@@ -52,11 +53,17 @@ console.log(Swarga)
 // setTest(list)
 // console.log(test); 
 }
-const normalFetch = async(Swarga) => {
-let url = `https://slackbackend.taparia11.repl.co/api/data/fetch${Swarga}`
-let res = await fetch(url);
-let data = await res.json();
-setTest(data);
+// const normalFetch = async(Swarga) => {
+// let url = `https://slackbackend.taparia11.repl.co/api/data/fetch${Swarga}`
+// let res = await fetch(url);
+// let data = await res.json();
+// setTest(data);
+// }
+async function normalFetch(Swarga) {
+  let response = await axios.get(`https://slackbackend.taparia11.repl.co/api/data/fetch${Swarga}`);
+console.log(response);
+let data = await response.data;
+         setTest(data);
 }
 useEffect(()=>{
 trialFetch(urlLink.slice(22,fl));

@@ -1,22 +1,30 @@
 import React, {useEffect, useState} from 'react'
 import Channel from './Channel'
 import './components.css'
-
+import axios from 'axios'
 import Render from './Render'
 import Thread from './Thread'
 const Sidebar = () => {
-
+    // const axios = require('axios').default;
     let list = []
     const [articles, setArticles] = useState([])
    const[test, setTest] = useState([])
    const [save, setSave] = useState([])
     let lis = [0,1]
-    const updateNews = async ()=>{
-        const url = "https://slackbackend.taparia11.repl.co/api/data/fetchallchannel";
-        let data = await fetch(url);
-        let parsedData = await data.json()
-        setArticles(parsedData);
-    }
+    // const updateNews = async ()=>{
+    //     const url = "https://slackbackend.taparia11.repl.co/api/data/fetchallchannel";
+    //     let data = await fetch(url);
+    //     let parsedData = await data.json()
+    //     setArticles(parsedData);
+    // }
+    const updateNews = async()=> {
+        
+          let response = await axios.get("https://slackbackend.taparia11.repl.co/api/data/fetchallchannel");
+          console.log(response);
+          let data = await response.data;
+                   setArticles(data);
+        
+      }
     const trialFetch = async() => {
         // const day = getDate();
         // const month = getMonth();
