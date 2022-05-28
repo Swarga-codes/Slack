@@ -67,7 +67,8 @@ let data = await response.data;
 }
 useEffect(()=>{
 trialFetch(urlLink.slice(22,fl));
-normalFetch(urlLink.slice(22,fl));
+// normalFetch(urlLink.slice(22,fl));
+normalFetch(urlLink.slice(32,fl));
 },[])
   return (
     <div className='dataContent'>
