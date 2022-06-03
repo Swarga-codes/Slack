@@ -50,7 +50,8 @@ function addComponent(e) {
     <div>
     <img src={props.avatar} className="card-img-top" alt="..."/>
     </div>
-    <div className="card-body">
+    <div className="card-body" id='cardBody'>
+    <div className="message">
     <h5 className="card-title">{props.user}  <span className="card-text"><small className="text-muted">{date.getDate()+
       "/"+(date.getMonth()+1)+
       "/"+date.getFullYear()+
@@ -59,9 +60,13 @@ function addComponent(e) {
       ":"+date.getSeconds()}</small></span></h5>
     
       <p className="card-text">{props.message}</p>
+   
     
     {props.thread ? <button className='ThreadBtn' onClick={addComponent}>View Thread</button> : <h4></h4>}
+    </div>
+    <div className="threadmess">
     <h2 id='thred'></h2>
+  
       {/* {components.map((item) => {
         return( 
         
@@ -71,7 +76,7 @@ function addComponent(e) {
         
         )
         })}  */}
-
+       
 {components.map((elmt)=>{
       if ( props.thread == elmt.thread_ts  && props.userid == elmt.parent_user_id ) {
       
@@ -90,6 +95,7 @@ function addComponent(e) {
       // props.thread 
       
     })}
+    </div>
     </div>
   </div>
   

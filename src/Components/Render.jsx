@@ -72,8 +72,15 @@ normalFetch(urlLink.slice(32,fl));
 },[])
   return (
     <div className='dataContent'>
+    <div className="archive">
     <h1>Slack Archives</h1>
-    <div>
+    <form className="d-flex" role="search">
+    <input className="form-control me-2" type="search" placeholder="Search for messages..." aria-label="Search" id='searchBar'/>
+    <button className="btn btn-outline-dark" type="submit">Search</button>
+  </form>
+  </div>
+    <div className='messageBundle'>
+  
   
 
     {
