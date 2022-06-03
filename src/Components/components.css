@@ -22,7 +22,7 @@ html {
 /* margin-left: mrem; */
 }
 .dataContent h1{
-    margin-left: 20rem;
+    margin-left: 2rem;
     font-weight: bolder;
 }
 .dataContent h5{
@@ -32,7 +32,8 @@ html {
 .Card{
     border: none;
     display: flex;
-    margin-left: 16rem;
+    margin-left: 4rem;
+    margin-top: 3rem;
     width: 55%;
 }
 .ren{
@@ -67,4 +68,43 @@ span{
 }
 .threadmess {
     margin-top: 1rem;
+}
+.ThreadBtn{
+    border: none;
+    outline: none;
+    background: transparent;
+    cursor: pointer;
+}
+.ThreadBtn:hover{
+    background-color: rgb(182, 212, 250);
+    border-radius: 4px;
+}
+
+.Categories h1{
+    margin-left: 3rem;
+    margin-top: 3rem;
+}
+.routeTiles{
+    margin-left: 6rem;
+    margin-top: 5rem;
+    margin-bottom: 5rem;
+}
+.routeTiles .card{
+    font-weight: bolder;
+    padding: 1.5rem 1rem;
+    font-size: 18px;
+    font-weight: bolder;
+}
+.card{
+    width: 30rem;
+}
+.routeTiles{
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    grid-auto-rows: minmax(100px, auto);
+}
+.card a{
+    text-decoration: none;
+    color: #000000;
 }

@@ -1,14 +1,12 @@
 import React from 'react'
+import Sidebar from './Sidebar'
 
 const Welcome = () => {
   return (
-    <div style={{textAlign:'center',color:'#FFFFFF'}}>
-    
-    <h1>
-    Welcome
-    
-    </h1>
-    </div>
+    <>
+    <Sidebar/>
+   
+    </>
   )
 }
 

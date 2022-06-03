@@ -76,7 +76,7 @@ console.log(test);
     return (
         <>
         <div style={{display:'flex'}}>
-            <div className="w3-sidebar w3-bar-block w3-light-grey w3-card" style={{width:"15%"}}>
+          {/*  <div className="w3-sidebar w3-bar-block w3-light-grey w3-card" style={{width:"15%"}}>
            {articles.map((element) => {
             //    console.log(element);
                             return <>
@@ -86,14 +86,25 @@ console.log(test);
                                 </div>
                                 </>
                         })}
-            </div> 
+                    </div> */}
        
-            <div className='dataContent'>
-            <h1>Slack Archives</h1>
-            <div style={{display:'flex'}}>
-    <div className='ren'>
-    <Render/>
+            <div className='Categories'>
+            <h1>Categories</h1>
+            <div>
+    <div className="routeTiles">
+    {articles.map((element) => {
+    return(
+        <div class="card">
+        <div class="card-body">
+         <a href={element.name}>#{element.name}</a>
+        </div>
+      </div>
+    )
+        
+    })}
   
+
+
     </div>
       {/* <div style={{overflowY:'scroll', width:'23rem', overflowX:'hidden'}}>
       <Thread/>

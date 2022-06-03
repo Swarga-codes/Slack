@@ -67,12 +67,15 @@ let data = await response.data;
 }
 useEffect(()=>{
 trialFetch(urlLink.slice(22,fl));
-// normalFetch(urlLink.slice(22,fl));
+// normalFetch(urlLink.slice(22,fl));   //(for localhost)
 normalFetch(urlLink.slice(32,fl));
 },[])
   return (
     <div className='dataContent'>
-    <div style={{marginLeft:'6rem'}}>
+    <h1>Slack Archives</h1>
+    <div>
+  
+
     {
       test.map((element,list,test,count) => {    //     const filterArray = element.filter((element,id) => 
       //     element.id !== id);

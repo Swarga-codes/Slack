@@ -60,7 +60,7 @@ function addComponent(e) {
     
       <p className="card-text">{props.message}</p>
     
-    {props.thread ? <button style={{border:"2px solid red"}} onClick={addComponent}>View Thread</button> : <h4></h4>}
+    {props.thread ? <button className='ThreadBtn' onClick={addComponent}>View Thread</button> : <h4></h4>}
     <h2 id='thred'></h2>
       {/* {components.map((item) => {
         return( 
