@@ -8,6 +8,7 @@ const Render = () => {
   var urlLink = window.location.href;
   var fl = urlLink.length;
   const[test, setTest] = useState([])
+  const [query, setQuery] = useState("")
   let list = []
   const trialFetch = async(Swarga) => {
     // const day = getDate();
@@ -60,6 +61,7 @@ console.log(Swarga)
 // setTest(data);
 // }
 async function normalFetch(Swarga) {
+  // console.log("HII")
   let response = await axios.get(`https://slackbackend.taparia11.repl.co/api/data/fetch${Swarga}`);
 console.log(response);
 let data = await response.data;
@@ -67,15 +69,15 @@ let data = await response.data;
 }
 useEffect(()=>{
 trialFetch(urlLink.slice(22,fl));
-// normalFetch(urlLink.slice(22,fl));   //(for localhost)
-normalFetch(urlLink.slice(32,fl));
+normalFetch(urlLink.slice(22,fl));   //(for localhost)
+// normalFetch(urlLink.slice(32,fl));
 },[])
   return (
     <div className='dataContent'>
     <div className="archive">
     <h1>Slack Archives</h1>
     <form className="d-flex" role="search">
-    <input className="form-control me-2" type="search" placeholder="Search for messages..." aria-label="Search" id='searchBar'/>
+    <input className="form-control me-2" onChange={event => setQuery(event.target.value)} type="search" placeholder="Search in Slack" aria-label="Search" id='searchBar'/>
     <button className="btn btn-outline-dark" type="submit">Search</button>
   </form>
   </div>
@@ -84,7 +86,13 @@ normalFetch(urlLink.slice(32,fl));
   
 
     {
-      test.map((element,list,test,count) => {    //     const filterArray = element.filter((element,id) => 
+      test.filter(post => {
+        if (query === '') {
+          return post;
+        } else if (post.text.toLowerCase().includes(query.toLowerCase())) {
+          return post;
+        }
+      }).map((element,list,test,count) => {    //     const filterArray = element.filter((element,id) => 
       //     element.id !== id);
       //     setArticles(filterArray);
   // for(let i=0;i<list.length;i++){
