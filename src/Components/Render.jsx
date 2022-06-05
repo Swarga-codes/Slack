@@ -11,6 +11,8 @@ const Render = () => {
   var fl = urlLink.length;
   const[test, setTest] = useState([])
   const [query, setQuery] = useState("")
+  const[threadCrumb, setThreadCrumb] = useState(false);
+  
   let list = []
   const trialFetch = async(Swarga) => {
     // const day = getDate();
@@ -79,7 +81,11 @@ normalFetch(urlLink.slice(32,fl));
     <div className="archive">
     <div>
     <h1>Slack Archives</h1>
+    {threadCrumb===false?
     <p className='breadCrumbs'>All &nbsp; &nbsp; &gt; &nbsp; &nbsp; #{urlLink.slice(32,fl)}</p>
+    :
+    <p className='breadCrumbs'>All &nbsp; &nbsp; &gt; &nbsp; &nbsp; #{urlLink.slice(32,fl)} &nbsp; &nbsp; &gt; &nbsp; &nbsp; Thread</p>
+  }
     </div>
     <div>
     <form className="d-flex" role="search">
@@ -119,7 +125,7 @@ normalFetch(urlLink.slice(32,fl));
              
         {/*<Message user={element['user']} message={element.text} time={element.thread_ts}/>*/}
         
-        <Message nreq={test.length} userid={element.user} user={element.user_profile.real_name} message={element.text} time={element.thread_ts} avatar={element.user_profile.image_72} data={test} thread={element.thread_ts > 1 ? element.thread_ts : 0}/>
+        <Message fun={setThreadCrumb} count={element.reply_users_count} nreq={test.length} userid={element.user} user={element.user_profile.real_name} message={element.text} time={element.thread_ts} avatar={element.user_profile.image_72} data={test} thread={element.thread_ts > 1 ? element.thread_ts : 0}/>
           
         </>
           )
