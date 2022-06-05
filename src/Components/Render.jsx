@@ -71,15 +71,15 @@ let data = await response.data;
 }
 useEffect(()=>{
 trialFetch(urlLink.slice(22,fl));
-normalFetch(urlLink.slice(22,fl));   //(for localhost)
-// normalFetch(urlLink.slice(32,fl));
+// normalFetch(urlLink.slice(22,fl));   //(for localhost)
+normalFetch(urlLink.slice(32,fl));
 },[])
   return (
     <div className='dataContent'>
     <div className="archive">
     <div>
     <h1>Slack Archives</h1>
-    <p className='breadCrumbs'>All &nbsp; &nbsp; &gt; &nbsp; &nbsp; #{urlLink.slice(22,fl)}</p>
+    <p className='breadCrumbs'>All &nbsp; &nbsp; &gt; &nbsp; &nbsp; #{urlLink.slice(32,fl)}</p>
     </div>
     <div>
     <form className="d-flex" role="search">
