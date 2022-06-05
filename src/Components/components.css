@@ -114,6 +114,7 @@ span{
 }
 #cardBody{
     display: flex;
+    padding-right: 2rem;
 }
 #searchBar{
     width: 30rem;
@@ -124,8 +125,19 @@ span{
     display: flex;
 }
 .messageBundle{
-    margin-top: 8rem;
+    height: 78vh;
+    margin-top: 2rem;
+    overflow-y: scroll;
+    width: -webkit-fit-content;
+    width: -moz-fit-content;
+    width: fit-content;
+
 }
 .btn{
     height: 3rem;
+}
+.breadCrumbs{
+    margin-left: 2.5rem;
+    color: gray;
+    font-weight: bold;
 }

@@ -4,7 +4,9 @@ import { useState } from 'react'
 import './components.css'
 import Thread from './Thread'
 import axios from 'axios'
+
 const Render = () => {
+
   var urlLink = window.location.href;
   var fl = urlLink.length;
   const[test, setTest] = useState([])
@@ -69,17 +71,22 @@ let data = await response.data;
 }
 useEffect(()=>{
 trialFetch(urlLink.slice(22,fl));
-normalFetch(urlLink.slice(22,fl));   //(for localhost)
-// normalFetch(urlLink.slice(32,fl));
+// normalFetch(urlLink.slice(22,fl));   //(for localhost)
+normalFetch(urlLink.slice(32,fl));
 },[])
   return (
     <div className='dataContent'>
     <div className="archive">
+    <div>
     <h1>Slack Archives</h1>
+    <p className='breadCrumbs'>All &nbsp; &nbsp; &gt; &nbsp; &nbsp; #{urlLink.slice(32,fl)}</p>
+    </div>
+    <div>
     <form className="d-flex" role="search">
     <input className="form-control me-2" onChange={event => setQuery(event.target.value)} type="search" placeholder="Search in Slack" aria-label="Search" id='searchBar'/>
     <button className="btn btn-outline-dark" type="submit">Search</button>
   </form>
+  </div>
   </div>
     <div className='messageBundle'>
   
@@ -115,10 +122,21 @@ normalFetch(urlLink.slice(22,fl));   //(for localhost)
 //   <h2>Hello</h2>
           // <h1 key={element.id}>{element.id}</h1>
          <>
+<<<<<<< HEAD
                           {/*<Message user={element['user']} message={element.text} time={element.thread_ts}/>*/}
           <Message nreq={test.length} userid={element.user} user={element.user_profile.real_name} message={element.text} time={element.thread_ts} avatar={element.user_profile.image_72} data={test} thread={element.thread_ts > 1 ? element.thread_ts : 0}/>   
         </>)
               }
+=======
+             
+        {/*<Message user={element['user']} message={element.text} time={element.thread_ts}/>*/}
+        
+        <Message nreq={test.length} userid={element.user} user={element.user_profile.real_name} message={element.text} time={element.thread_ts} avatar={element.user_profile.image_72} data={test} thread={element.thread_ts > 1 ? element.thread_ts : 0}/>
+          
+        </>
+          )
+                          }
+>>>>>>> 84453e0096940ae30904b7ab22cb64dfa31f22f7
                           catch(err){
                             console.log('error occured');
                           }
