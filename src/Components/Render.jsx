@@ -99,26 +99,32 @@ normalFetch(urlLink.slice(32,fl));
   
 
     {
-      test.filter(post => {
+      test.filter(post => 
+        { let ik = "name"
+          try {
+            
+             ik = post.user_profile.real_name 
+             // != undefined ? post.user_profile.real_name : 0;
+            } catch (error) {
+              
+              console.log("Error hai")
+            }
+            // let na = test.filter(user => Object.values(user.user_profile).reduce((a,b,c,d) => d).toLowerCase().includes(query.toLowerCase()));
+            // console.log(ik)
         if (query === '') {
           return post;
-        } else if (post.text.toLowerCase().includes(query.toLowerCase())) {
+        } else if (post.text.toLowerCase().includes(query.toLowerCase()) || ik.toLowerCase().includes(query.toLowerCase()) ) {
           return post;
         }
-      }).map((element,list,test,count) => {    //     const filterArray = element.filter((element,id) => 
+      }
+      ).map((element,list,test,count) => {    //     const filterArray = element.filter((element,id) => 
       //     element.id !== id);
       //     setArticles(filterArray);
   // for(let i=0;i<list.length;i++){
-    if (!element.parent_user_id) {
-      
-    
-    try{
-      
+    if (!element.parent_user_id) {  
+    try{ 
       // console.log(test)
-    
-  
-                          return( 
-                              
+                          return(                         
 //   <h2>Hello</h2>
           // <h1 key={element.id}>{element.id}</h1>
          <>
