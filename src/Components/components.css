@@ -125,10 +125,13 @@ span{
     display: flex;
 }
 .messageBundle{
+    height: 78vh;
     margin-top: 2rem;
     overflow-y: scroll;
-    height: 84vh;
+    width: -webkit-fit-content;
+    width: -moz-fit-content;
     width: fit-content;
+
 }
 .btn{
     height: 3rem;
