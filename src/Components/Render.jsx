@@ -122,21 +122,10 @@ normalFetch(urlLink.slice(32,fl));
 //   <h2>Hello</h2>
           // <h1 key={element.id}>{element.id}</h1>
          <>
-<<<<<<< HEAD
                           {/*<Message user={element['user']} message={element.text} time={element.thread_ts}/>*/}
           <Message nreq={test.length} userid={element.user} user={element.user_profile.real_name} message={element.text} time={element.thread_ts} avatar={element.user_profile.image_72} data={test} thread={element.thread_ts > 1 ? element.thread_ts : 0}/>   
         </>)
               }
-=======
-             
-        {/*<Message user={element['user']} message={element.text} time={element.thread_ts}/>*/}
-        
-        <Message nreq={test.length} userid={element.user} user={element.user_profile.real_name} message={element.text} time={element.thread_ts} avatar={element.user_profile.image_72} data={test} thread={element.thread_ts > 1 ? element.thread_ts : 0}/>
-          
-        </>
-          )
-                          }
->>>>>>> 84453e0096940ae30904b7ab22cb64dfa31f22f7
                           catch(err){
                             console.log('error occured');
                           }
