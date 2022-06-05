@@ -40,10 +40,19 @@ function addComponent(e) {
   setComponents(props.data) 
   // console.log(components)
   document.getElementById('thred').innerHTML = 'Thread';
+  document.getElementById('cross').innerHTML = 'X'
     // thread_ts && parent_user_id
+    props.fun(true)
   e.preventDefault();
   
 } 
+const removeComponent = (e) =>{
+  setComponents([]);
+  document.getElementById('thred').innerHTML = '';
+  document.getElementById('cross').innerHTML = ''
+  props.fun(false);
+  e.preventDefault();
+}
   return (
 
     <div className="Card mb-5" >
@@ -65,7 +74,12 @@ function addComponent(e) {
     {/* {props.thread ? <button className='ThreadBtn' onClick={addComponent}>View Thread</button> : <h4></h4>} */}
     </div>
     <div className="threadmess">
-    <h2 id='thred'></h2>
+ 
+    <span id='thred'></span>
+    <span id='cross' onClick={removeComponent}></span>
+    
+   
+    
   
       {/* {components.map((item) => {
         return( 

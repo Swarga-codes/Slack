@@ -14,6 +14,8 @@ const Render = () => {
   const [uniquei, setUniquei] = useState([]); 
   const [uniquec, setUniquec] = useState([]); 
   const [query, setQuery] = useState("")
+  const[threadCrumb, setThreadCrumb] = useState(false);
+  
   let list = []
   const trialFetch = async(Swarga) => {
     // const day = getDate();
@@ -97,7 +99,11 @@ normalFetch(urlLink.slice(32,fl));
     <div className="archive">
     <div>
     <h1>Slack Archives</h1>
+    {threadCrumb===false?
     <p className='breadCrumbs'>All &nbsp; &nbsp; &gt; &nbsp; &nbsp; #{urlLink.slice(32,fl)}</p>
+    :
+    <p className='breadCrumbs'>All &nbsp; &nbsp; &gt; &nbsp; &nbsp; #{urlLink.slice(32,fl)} &nbsp; &nbsp; &gt; &nbsp; &nbsp; Thread</p>
+  }
     </div>
     <div>
     <form className="d-flex" role="search">
