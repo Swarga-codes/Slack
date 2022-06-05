@@ -75,6 +75,7 @@ span{
     outline: none;
     background: transparent;
     cursor: pointer;
+    margin-left: 4rem;
 }
 .ThreadBtn:hover{
     background-color: rgb(182, 212, 250);

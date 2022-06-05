@@ -62,7 +62,7 @@ function addComponent(e) {
       <p className="card-text">{props.message}</p>
    
     
-    {props.thread ? <button className='ThreadBtn' onClick={addComponent}>View Thread</button> : <h4></h4>}
+    {/* {props.thread ? <button className='ThreadBtn' onClick={addComponent}>View Thread</button> : <h4></h4>} */}
     </div>
     <div className="threadmess">
     <h2 id='thred'></h2>
