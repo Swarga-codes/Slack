@@ -97,8 +97,8 @@ function addComponent(e) {
 
 useEffect(()=>{
 trialFetch(urlLink.slice(32,fl));
-normalFetch(urlLink.slice(22,fl));   //(for localhost)
-// normalFetch(urlLink.slice(32,fl));
+// normalFetch(urlLink.slice(22,fl));   //(for localhost)
+normalFetch(urlLink.slice(32,fl));
 },[])
   return (
     <div className='dataContent'>
