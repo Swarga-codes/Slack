@@ -20,6 +20,8 @@ const Render = () => {
   const [channelquery, setChannelQuery] = useState("")
   const[threadCrumb, setThreadCrumb] = useState(false);
   const[thread, setThread] = useState(false)
+  const [timeValue, settimeValue] = useState("")
+
   
   let list = []
   const trialFetch = async(Swarga) => {
@@ -97,8 +99,8 @@ function addComponent(e) {
 
 useEffect(()=>{
 trialFetch(urlLink.slice(32,fl));
-// normalFetch(urlLink.slice(22,fl));   //(for localhost)
-normalFetch(urlLink.slice(32,fl));
+normalFetch(urlLink.slice(22,fl));   //(for localhost)
+// normalFetch(urlLink.slice(32,fl));
 },[])
   return (
     <div className='dataContent'>
@@ -200,12 +202,17 @@ Filter by dates
     if (!element.parent_user_id) {  
     try{ 
       // console.log(test)
+      var iTime = element.thread_ts.slice(0,10).toString()
+      var fTime = element.thread_ts.slice(11,14).toString()
+      // var userTime = parseInt(iTime+fTime)
+      // var userDate = new Date(parseInt(iTime+fTime));
+      // console.log(new Date(parseInt(iTime+fTime)))
                           return(                         
 //   <h2>Hello</h2>
           // <h1 key={element.id}>{element.id}</h1>
          <>
                           {/*<Message user={element['user']} message={element.text} time={element.thread_ts}/>*/}
-          <Message nreq={test.length} userid={element.user} user={element.user_profile.real_name} message={element.text} time={element.thread_ts} avatar={element.user_profile.image_72} data={test} thread={element.thread_ts > 1 ? element.thread_ts : 0}/>   
+          <Message nreq={test.length} userid={element.user} user={element.user_profile.real_name} message={element.text} time={element.thread_ts.slice(0,10)} time1={parseInt(iTime+fTime)} avatar={element.user_profile.image_72} data={test} thread={element.thread_ts > 1 ? element.thread_ts : 0}/>   
           {element.thread_ts ? <button className={`ThreadBtn ${element.user}`} id={`${element.thread_ts}`} onClick={addComponent}>{element.reply_users_count} Replies</button> : <h4></h4>}
 </>)
               }
