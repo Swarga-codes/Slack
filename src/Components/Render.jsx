@@ -18,7 +18,7 @@ const Render = () => {
   const [uniquec, setUniquec] = useState([]); 
   const [query, setQuery] = useState("")
   const[threadCrumb, setThreadCrumb] = useState(false);
-  const[dropdown, setDrop] = useState(false)
+  const[thread, setThread] = useState(false)
   
   let list = []
   const trialFetch = async(Swarga) => {
@@ -90,12 +90,13 @@ function addComponent(e) {
     setUniquei(e.target.id)
     setUniquec(e.currentTarget.className.slice(10,e.currentTarget.className.length))
   e.preventDefault();
-  
+  setThreadCrumb(true)
+  setThread(true)
 } 
 
 useEffect(()=>{
-trialFetch(urlLink.slice(22,fl));
-// normalFetch(urlLink.slice(22,fl));   //(for localhost)
+trialFetch(urlLink.slice(32,fl));
+// normalFetch(urlLink.slice(32,fl));   //(for localhost)
 normalFetch(urlLink.slice(32,fl));
 },[])
   return (
@@ -210,8 +211,20 @@ Filter by dates
                         
                         }   })
       } </div>
+      {thread === true?
     <div className="threadmess">
+    <div className='threadHead'>
+    <div>
       <h1>Thread</h1>
+    
+      </div>
+      <div className='cross' onClick={() => {
+        setThread(false)
+      setThreadCrumb(false)
+      }}>
+      <p>X</p>
+      </div>
+      </div>
       <div className="ThreadContainer">
     {components.map((elmt)=>{
       console.log(uniquei)
@@ -232,8 +245,11 @@ Filter by dates
       // props.thread 
       
     })}
-    </div>
+     </div>
       </div>
+      :
+      <div></div>
+  }
       </div>
     </div>
   )
