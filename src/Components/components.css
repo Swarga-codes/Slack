@@ -63,7 +63,7 @@ span {
 }
 .threadmess {
   margin-top: 1rem;
-  margin-left: 4rem;
+  margin-left: 0rem;
 }
 .ThreadBtn{
     border: none;
@@ -251,4 +251,9 @@ span {
 }
 .MessSection{
     display: flex;
+}
+.ThreadContainer{
+    overflow-x: hidden;
+    overflow-y: scroll;
+    height: 73vh;
 }

@@ -210,8 +210,9 @@ Filter by dates
                         
                         }   })
       } </div>
-    <div className="threadmess" >
+    <div className="threadmess">
       <h1>Thread</h1>
+      <div className="ThreadContainer">
     {components.map((elmt)=>{
       console.log(uniquei)
       if ( uniquei == elmt.thread_ts  && uniquec == elmt.parent_user_id ) {
@@ -231,7 +232,7 @@ Filter by dates
       // props.thread 
       
     })}
-     
+    </div>
       </div>
       </div>
     </div>
