@@ -6,9 +6,11 @@ import Thread from './Thread';
 const Message = (props) => {
   const Navigate =  useNavigate();
   const [components, setComponents] = useState([]); 
+  const [timeValue, settimeValue] = useState()
   const[times, setTimes] = useState([]);
   const threadVisibility = useRef();
   let list = []
+  // let userTime = props.time
   // const[tdata, setTdata] = useState([]);
   // setTdata(props.data)
   // console.log(tdata)
@@ -16,8 +18,8 @@ const Message = (props) => {
   // const TimeConv = (time) => {
   //   date = new Date(time);
   //   console.log(date)
-  let timestamp = parseInt(props.time);
-  let date = new Date(timestamp);
+    // let timestamp = parseInt(props.time);
+    // let date = new Date(timestamp);
   try{
 
   // console.log(props.time)
@@ -48,6 +50,11 @@ function addComponent(e) {
   e.preventDefault();
   
 } 
+// var userTime = parseInt(props.time1)
+// var userDate = new Date(userTime);
+// settimeValue(userDate)
+// console.log(userDate)
+
 const removeComponent = (e) =>{
   setComponents([])
  threadVisibility.current.style.display="none"
@@ -64,12 +71,16 @@ const removeComponent = (e) =>{
     </div>
     <div className="card-body" id='cardBody'>
     <div className="message">
-    <h5 className="card-title">{props.user}  <span className="card-text"><small className="text-muted">{date.getDate()+
-      "/"+(date.getMonth()+1)+
-      "/"+date.getFullYear()+
-      " "+date.getHours()+
-      ":"+date.getMinutes()+
-      ":"+date.getSeconds()}</small></span></h5>
+    <h5 className="card-title">{props.user}  
+    <span className="card-text"><small className="text-muted">{`${new Date(props.time1)}`
+    // `${new Date(props.time)}`
+    // date.getDate()+
+    //   "/"+(date.getMonth()+1)+
+    //   "/"+date.getFullYear()+
+    //   " "+date.getHours()+
+    //   ":"+date.getMinutes()+
+    //   ":"+date.getSeconds()
+      }</small></span></h5>
     
       <p className="card-text">{props.message}</p>
    
