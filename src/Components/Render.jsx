@@ -13,6 +13,9 @@ const Render = () => {
   var urlLink = window.location.href;
   var fl = urlLink.length;
   const[test, setTest] = useState([])
+  const [components, setComponents] = useState([]); 
+  const [uniquei, setUniquei] = useState([]); 
+  const [uniquec, setUniquec] = useState([]); 
   const [query, setQuery] = useState("")
   const[threadCrumb, setThreadCrumb] = useState(false);
   const[dropdown, setDrop] = useState(false)
@@ -75,10 +78,25 @@ console.log(response);
 let data = await response.data;
          setTest(data);
 }
+
+function addComponent(e) { 
+  // refclose.current.click();
+  
+  setComponents(test) 
+  console.log(components)
+  // document.getElementById('thred').innerHTML = 'Thread';
+    // thread_ts && parent_user_id
+    // const id = e.target.id;
+    setUniquei(e.target.id)
+    setUniquec(e.currentTarget.className.slice(10,e.currentTarget.className.length))
+  e.preventDefault();
+  
+} 
+
 useEffect(()=>{
 trialFetch(urlLink.slice(22,fl));
 // normalFetch(urlLink.slice(22,fl));   //(for localhost)
-normalFetch(urlLink.slice(22,fl));
+normalFetch(urlLink.slice(32,fl));
 },[])
   return (
     <div className='dataContent'>
@@ -87,9 +105,9 @@ normalFetch(urlLink.slice(22,fl));
     <h1>Slack Archives</h1>
     
     {threadCrumb===false?
-    <p className='breadCrumbs'>All &nbsp; &nbsp; &gt; &nbsp; &nbsp; #{urlLink.slice(22,fl)}</p>
+    <p className='breadCrumbs'>All &nbsp; &nbsp; &gt; &nbsp; &nbsp; #{urlLink.slice(32,fl)}</p>
     :
-    <p className='breadCrumbs'>All &nbsp; &nbsp; &gt; &nbsp; &nbsp; #{urlLink.slice(22,fl)} &nbsp; &nbsp; &gt; &nbsp; &nbsp; Thread</p>
+    <p className='breadCrumbs'>All &nbsp; &nbsp; &gt; &nbsp; &nbsp; #{urlLink.slice(32,fl)} &nbsp; &nbsp; &gt; &nbsp; &nbsp; Thread</p>
   }
     </div>
     <div>
@@ -118,7 +136,7 @@ normalFetch(urlLink.slice(22,fl));
 <label htmlFor="">In channel</label>
 <select id="channels" name="channels">
 <option value="all">All channels</option>
-<option value="current">{urlLink.slice(22,fl)}</option>
+<option value="current">{urlLink.slice(32,fl)}</option>
 </select>
 <label htmlFor="">From user</label>
 <input type="text" placeholder='Display name or id...' onChange={event => setQuery(event.target.value)}/>
@@ -145,6 +163,7 @@ Filter by dates
   </div>
 </div>
   </div>
+  <div className="MessSection">
     <div className='messageBundle'>
   
   
@@ -179,25 +198,42 @@ Filter by dates
 //   <h2>Hello</h2>
           // <h1 key={element.id}>{element.id}</h1>
          <>
-             
-        {/*<Message user={element['user']} message={element.text} time={element.thread_ts}/>*/}
-        
-        <Message fun={setThreadCrumb} count={element.reply_users_count} nreq={test.length} userid={element.user} user={element.user_profile.real_name} message={element.text} time={element.thread_ts} avatar={element.user_profile.image_72} data={test} thread={element.thread_ts > 1 ? element.thread_ts : 0}/>
-          
-        </>
-          )
-                          }
+                          {/*<Message user={element['user']} message={element.text} time={element.thread_ts}/>*/}
+          <Message nreq={test.length} userid={element.user} user={element.user_profile.real_name} message={element.text} time={element.thread_ts} avatar={element.user_profile.image_72} data={test} thread={element.thread_ts > 1 ? element.thread_ts : 0}/>   
+          {element.thread_ts ? <button className={`ThreadBtn ${element.user}`} id={`${element.thread_ts}`} onClick={addComponent}>{element.reply_users_count} Replies</button> : <h4></h4>}
+</>)
+              }
                           catch(err){
                             console.log('error occured');
                           }
                           // }
                         
                         }   })
-      }
-    
+      } </div>
+    <div className="threadmess" >
+      <h1>Thread</h1>
+    {components.map((elmt)=>{
+      console.log(uniquei)
+      if ( uniquei == elmt.thread_ts  && uniquec == elmt.parent_user_id ) {
       
-      </div>
+        try{
+                              return( 
+                                <>
+                <Thread user={elmt.user_profile.real_name} message={elmt.text} time={elmt.thread_ts} avatar={elmt.user_profile.image_72} />
+              
+            </>
+              )
+                              }
+                              catch(err){
+                                console.log('error occured');
+                              }
+      }
+      // props.thread 
+      
+    })}
      
+      </div>
+      </div>
     </div>
   )
 }

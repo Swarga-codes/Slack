@@ -74,7 +74,7 @@ const removeComponent = (e) =>{
       <p className="card-text">{props.message}</p>
    
     
-    {props.thread ? <button className='ThreadBtn' onClick={addComponent}>{props.count} Replies</button> : <h4></h4>}
+    {/* {props.thread ? <button className='ThreadBtn' onClick={addComponent}>View Thread</button> : <h4></h4>} */}
     </div>
     <div className="threadmess" ref={threadVisibility}>
  

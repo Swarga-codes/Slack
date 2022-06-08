@@ -65,11 +65,12 @@ span {
   margin-top: 1rem;
   margin-left: 4rem;
 }
-.ThreadBtn {
-  border: none;
-  outline: none;
-  background: transparent;
-  cursor: pointer;
+.ThreadBtn{
+    border: none;
+    outline: none;
+    background: transparent;
+    cursor: pointer;
+    margin-left: 4rem;
 }
 .ThreadBtn:hover {
   background-color: rgb(182, 212, 250);
@@ -242,4 +243,12 @@ span {
 }
 .MuiSwitch-root.MuiSwitch-sizeMedium.css-julti5-MuiSwitch-root{
     margin-left: 1rem;
+}
+.threadmess img{
+    margin-right: 1rem;
+    margin-top: 0.6rem;
+    width: 3rem;
+}
+.MessSection{
+    display: flex;
 }
