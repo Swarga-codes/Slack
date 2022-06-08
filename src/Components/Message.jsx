@@ -1,10 +1,13 @@
 import React, { useEffect, useState } from 'react'
 import { useRef } from 'react';
+import { useNavigate } from 'react-router-dom';
 import './components.css'
 import Thread from './Thread';
 const Message = (props) => {
+  const Navigate =  useNavigate();
   const [components, setComponents] = useState([]); 
   const[times, setTimes] = useState([]);
+  const threadVisibility = useRef();
   let list = []
   // const[tdata, setTdata] = useState([]);
   // setTdata(props.data)
@@ -21,35 +24,35 @@ const Message = (props) => {
 
 var n = [0,1]
   
-  
-//   console.log(""+date.getDate()+
-//             "/"+(date.getMonth()+1)+
-//             "/"+date.getFullYear()+
-//             " "+date.getHours()+
-//             ":"+date.getMinutes()+
-//             ":"+date.getSeconds());
-//             console.log(date.getMonth());
-//             // setTimes(date)
+
 }
 catch(err){
   console.log('no time')
 }
 function addComponent(e) { 
   // refclose.current.click();
-  
+  if(components == []){
   setComponents(props.data) 
+  }
+  else
+  {
+    setComponents([])
+    setComponents(props.data)
+  }
   // console.log(components)
   document.getElementById('thred').innerHTML = 'Thread';
   document.getElementById('cross').innerHTML = 'X'
+  threadVisibility.current.style.display="initial"
     // thread_ts && parent_user_id
     props.fun(true)
   e.preventDefault();
   
 } 
 const removeComponent = (e) =>{
-  setComponents([]);
-  document.getElementById('thred').innerHTML = '';
-  document.getElementById('cross').innerHTML = ''
+  setComponents([])
+ threadVisibility.current.style.display="none"
+  // document.getElementById('thred').innerHTML = '';
+  // document.getElementById('cross').innerHTML = ''
   props.fun(false);
   e.preventDefault();
 }
@@ -73,7 +76,7 @@ const removeComponent = (e) =>{
     
     {/* {props.thread ? <button className='ThreadBtn' onClick={addComponent}>View Thread</button> : <h4></h4>} */}
     </div>
-    <div className="threadmess">
+    <div className="threadmess" ref={threadVisibility}>
  
     <span id='thred'></span>
     <span id='cross' onClick={removeComponent}></span>
