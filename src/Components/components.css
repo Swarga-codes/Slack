@@ -222,7 +222,7 @@ span {
     border: 0.5px solid gray;
     margin-top: 0.5rem;
 }
-.css-5ryogn-MuiButtonBase-root-MuiSwitch-switchBase.Mui-checked {
+.css-5ryogn-MuiButtonBase-root-MuiSwitch-switchBase{
     color: #1976d2;
     padding: 0.6rem 0.6rem !important;
 }
