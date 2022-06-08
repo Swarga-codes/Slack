@@ -9,7 +9,7 @@ const Thread = (props) => {
     <img src={props.avatar} className="card-img-top" alt="..."/>
   
     <div className="card-body">
-    <h5 className="card-title">{props.user}  <span className="card-text"><small className="text-muted">12:00pm</small></span></h5>
+    <h5 className="card-title">{props.user}  <span className="card-text"><small className="text-muted">{`${new Date(props.time)}`}</small></span></h5>
     
       <p className="card-text">{props.message}</p>
     
