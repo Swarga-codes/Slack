@@ -286,3 +286,6 @@ span {
 /* .threadmess{
   display: inline-block;
 } */
+.byDate span .MuiSwitch-root.MuiSwitch-sizeMedium.css-julti5-MuiSwitch-root{
+  margin-left: 2.5rem;
+}

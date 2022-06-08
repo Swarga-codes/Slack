@@ -17,6 +17,7 @@ const Render = () => {
   const [uniquei, setUniquei] = useState([]); 
   const [uniquec, setUniquec] = useState([]); 
   const [query, setQuery] = useState("")
+  const [channelquery, setChannelQuery] = useState("")
   const[threadCrumb, setThreadCrumb] = useState(false);
   const[thread, setThread] = useState(false)
   
@@ -140,7 +141,7 @@ normalFetch(urlLink.slice(22,fl));
 <option value="current">{urlLink.slice(22,fl)}</option>
 </select>
 <label htmlFor="">From user</label>
-<input type="text" placeholder='Display name or id...' onChange={event => setQuery(event.target.value)}/>
+<input type="text" placeholder='Display name or id...' onChange={event => setChannelQuery(event.target.value)}/>
 <label htmlFor="">Sort by</label>
 <div>
 <select id="channels" name="channels">
@@ -182,9 +183,13 @@ Filter by dates
             }
             // let na = test.filter(user => Object.values(user.user_profile).reduce((a,b,c,d) => d).toLowerCase().includes(query.toLowerCase()));
             // console.log(ik)
-        if (query === '') {
+        if (query === '' && channelquery === '') {
           return post;
-        } else if (post.text.toLowerCase().includes(query.toLowerCase()) || ik.toLowerCase().includes(query.toLowerCase()) ) {
+        } 
+        else if (post.text.toLowerCase().includes(query.toLowerCase()) && channelquery === '' ) {
+          return post;
+        }
+        else if ( ik.toLowerCase().includes(channelquery.toLowerCase()) && query === ''  ) {
           return post;
         }
       }
