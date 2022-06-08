@@ -1,9 +1,12 @@
-import React, { useEffect } from 'react'
+import { useEffect } from 'react'
+import * as React from 'react';
 import Message from './Message'
 import { useState } from 'react'
+import Switch from '@mui/material/Switch';
 import './components.css'
 import Thread from './Thread'
 import axios from 'axios'
+const label = { inputProps: { 'aria-label': 'Switch demo' } };
 
 const Render = () => {
 
@@ -12,6 +15,7 @@ const Render = () => {
   const[test, setTest] = useState([])
   const [query, setQuery] = useState("")
   const[threadCrumb, setThreadCrumb] = useState(false);
+  const[dropdown, setDrop] = useState(false)
   
   let list = []
   const trialFetch = async(Swarga) => {
@@ -74,25 +78,72 @@ let data = await response.data;
 useEffect(()=>{
 trialFetch(urlLink.slice(22,fl));
 // normalFetch(urlLink.slice(22,fl));   //(for localhost)
-normalFetch(urlLink.slice(32,fl));
+normalFetch(urlLink.slice(22,fl));
 },[])
   return (
     <div className='dataContent'>
     <div className="archive">
     <div>
     <h1>Slack Archives</h1>
+    
     {threadCrumb===false?
-    <p className='breadCrumbs'>All &nbsp; &nbsp; &gt; &nbsp; &nbsp; #{urlLink.slice(32,fl)}</p>
+    <p className='breadCrumbs'>All &nbsp; &nbsp; &gt; &nbsp; &nbsp; #{urlLink.slice(22,fl)}</p>
     :
-    <p className='breadCrumbs'>All &nbsp; &nbsp; &gt; &nbsp; &nbsp; #{urlLink.slice(32,fl)} &nbsp; &nbsp; &gt; &nbsp; &nbsp; Thread</p>
+    <p className='breadCrumbs'>All &nbsp; &nbsp; &gt; &nbsp; &nbsp; #{urlLink.slice(22,fl)} &nbsp; &nbsp; &gt; &nbsp; &nbsp; Thread</p>
   }
     </div>
     <div>
-    <form className="d-flex" role="search">
+   {/* <form className="d-flex" role="search">
     <input className="form-control me-2" onChange={event => setQuery(event.target.value)} type="search" placeholder="Search in Slack" aria-label="Search" id='searchBar'/>
     <button className="btn btn-outline-dark" type="submit">Search</button>
-  </form>
+</form>*/}
   </div>
+  <div className="calendars">
+  <span class="datepicker-toggle">
+  <span class="datepicker-toggle-button"></span>
+  <input type="date" class="datepicker-input"/>
+</span>
+</div>
+
+  <div className="dropdown">
+  <button className="btn btn-secondary-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-search" viewBox="0 0 16 16">
+  <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
+</svg>
+  </button>
+  
+  <div className="dropdown-menu" id='drop'>
+<label htmlFor="">Search For</label>
+<input type="text" placeholder='Enter phrase...'  onChange={event => setQuery(event.target.value)}/>
+<label htmlFor="">In channel</label>
+<select id="channels" name="channels">
+<option value="all">All channels</option>
+<option value="current">{urlLink.slice(22,fl)}</option>
+</select>
+<label htmlFor="">From user</label>
+<input type="text" placeholder='Display name or id...' onChange={event => setQuery(event.target.value)}/>
+<label htmlFor="">Sort by</label>
+<div>
+<select id="channels" name="channels">
+<option value="all">Newest First</option>
+<option value="current">Oldest First</option>
+</select>
+</div>
+<p>
+Match exact phrase
+<Switch {...label}/>
+</p>
+<div className='byDate'>
+Filter by dates
+<span>
+<Switch {...label} />
+</span>
+</div>
+<button className='btn btn-success'>Search</button>
+
+
+  </div>
+</div>
   </div>
     <div className='messageBundle'>
   
