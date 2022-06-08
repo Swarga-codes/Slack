@@ -242,10 +242,11 @@ Filter by dates
       console.log(uniquei)
       if ( uniquei == elmt.thread_ts  && uniquec == elmt.parent_user_id ) {
       
-        try{
+        try{var iTime = elmt.ts.slice(0,10).toString()
+          var fTime = elmt.ts.slice(11,14).toString()
                               return( 
                                 <>
-                <Thread user={elmt.user_profile.real_name} message={elmt.text} time={elmt.thread_ts} avatar={elmt.user_profile.image_72} />
+                <Thread user={elmt.user_profile.real_name} message={elmt.text} time={parseInt(iTime+fTime)} avatar={elmt.user_profile.image_72} />
               
             </>
               )
