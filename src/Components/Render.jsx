@@ -109,7 +109,7 @@ normalFetch(urlLink.slice(32,fl));
     <h1>Slack Archives</h1>
     
     {threadCrumb===false?
-    <p className='breadCrumbs'>All &nbsp; &nbsp; &gt; &nbsp; &nbsp; #{urlLink.slice(32,fl)}</p>
+    <p className='breadCrumbs'>All &nbsp; &nbsp; &gt; &nbsp; &nbsp; #{urlLink.slice(32,fl)} </p>
     :
     <p className='breadCrumbs'>All &nbsp; &nbsp; &gt; &nbsp; &nbsp; #{urlLink.slice(32,fl)} &nbsp; &nbsp; &gt; &nbsp; &nbsp; Thread</p>
   }
