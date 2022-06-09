@@ -289,3 +289,9 @@ span {
 .byDate span .MuiSwitch-root.MuiSwitch-sizeMedium.css-julti5-MuiSwitch-root{
   margin-left: 2.5rem;
 }
+.breadCrumbs span{
+  font-size: 16px;
+  color: gray;
+  font-weight: bold;
+  cursor: pointer;
+}
