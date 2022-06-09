@@ -295,3 +295,6 @@ span {
   font-weight: bold;
   cursor: pointer;
 }
+#MessIcon{
+  margin-right: 0.5rem;
+}
