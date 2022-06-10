@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './components.css'
+import { processLinks } from '../utils/processLinks'
 import Thread from './Thread';
 const Message = (props) => {
   const Navigate =  useNavigate();
@@ -82,7 +83,7 @@ const removeComponent = (e) =>{
     //   ":"+date.getSeconds()
       }</small></span></h5>
     
-      <p className="card-text">{props.message}</p>
+      <p className="card-text">{processLinks(props.message)}</p>
    
     
     {/* {props.thread ? <button className='ThreadBtn' onClick={addComponent}>View Thread</button> : <h4></h4>} */}
