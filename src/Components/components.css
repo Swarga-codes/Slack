@@ -137,7 +137,7 @@ span {
   margin-left: 2.5rem;
   color: gray;
   font-weight: bold;
-  width: 20rem;
+  width: 35rem;
 }
 #thred {
   font-size: 2.5rem;
@@ -208,7 +208,7 @@ span {
 }
 .calendars{
     margin-left: auto;
-    margin-right: -68rem;
+    margin-right: -53rem;
     margin-top: 0.5rem;
     border: 0.5px solid gray;
     height: 2.9rem;
@@ -222,7 +222,7 @@ span {
     border: 0.5px solid gray;
     margin-top: 0.5rem;
 }
-.css-5ryogn-MuiButtonBase-root-MuiSwitch-switchBase{
+/* .css-5ryogn-MuiButtonBase-root-MuiSwitch-switchBase{
     color: #1976d2;
     padding: 0.6rem 0.6rem !important;
 }
@@ -245,7 +245,7 @@ span {
 }
 .MuiSwitch-root.MuiSwitch-sizeMedium.css-julti5-MuiSwitch-root{
     margin-left: 1rem;
-}
+} */
 .threadmess img{
     margin-right: 1rem;
     margin-top: 0.6rem;
@@ -297,4 +297,7 @@ span {
 }
 #MessIcon{
   margin-right: 0.5rem;
+}
+.MuiSwitch-root.MuiSwitch-sizeMedium.css-julti5-MuiSwitch-root{
+  width: 5rem;
 }
