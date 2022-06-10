@@ -100,9 +100,9 @@ function addComponent(e) {
 } 
 
 useEffect(()=>{
-trialFetch(urlLink.slice(32,fl));
-// normalFetch(urlLink.slice(32,fl));   //(for localhost)
-normalFetch(urlLink.slice(32,fl));
+trialFetch(urlLink.slice(22,fl));
+// normalFetch(urlLink.slice(22,fl));   //(for localhost)
+normalFetch(urlLink.slice(22,fl));
 },[])
   return (
     <div className='dataContent'>
@@ -111,11 +111,11 @@ normalFetch(urlLink.slice(32,fl));
     <h1>Slack Archives</h1>
     
     {threadCrumb===false?
-    <p className='breadCrumbs'><span onClick={() => navigation(-1)}>All</span>&nbsp; &nbsp; &gt; &nbsp; &nbsp;<span>#{urlLink.slice(32,fl)}</span></p>
+    <p className='breadCrumbs'><span onClick={() => navigation(-1)}>All</span>&nbsp; &nbsp; &gt; &nbsp; &nbsp;<span>#{urlLink.slice(22,fl)}</span></p>
     :
     <p className='breadCrumbs'><span onClick={() => {navigation(-1)}}>All</span>&nbsp; &nbsp; &gt; &nbsp; &nbsp;<span onClick={() => {setThread(false)
     
-    setThreadCrumb(false)}}>#{urlLink.slice(32,fl)}</span>&nbsp; &nbsp; &gt; &nbsp; &nbsp; Thread</p>
+    setThreadCrumb(false)}}>#{urlLink.slice(22,fl)}</span>&nbsp; &nbsp; &gt; &nbsp; &nbsp; Thread</p>
   }
     </div>
     <div>
@@ -144,7 +144,7 @@ normalFetch(urlLink.slice(32,fl));
 <label htmlFor="">In channel</label>
 <select id="channels" name="channels">
 <option value="all">All channels</option>
-<option value="current">{urlLink.slice(32,fl)}</option>
+<option value="current">{urlLink.slice(22,fl)}</option>
 </select>
 <label htmlFor="">From user</label>
 <input type="text" placeholder='Display name or id...' onChange={event => setChannelQuery(event.target.value)}/>

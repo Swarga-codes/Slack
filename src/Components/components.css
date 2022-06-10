@@ -286,9 +286,9 @@ span {
 /* .threadmess{
   display: inline-block;
 } */
-/* .byDate span .MuiSwitch-root.MuiSwitch-sizeMedium.css-julti5-MuiSwitch-root{
+.byDate span .MuiSwitch-root.MuiSwitch-sizeMedium.css-julti5-MuiSwitch-root{
   margin-left: 2.5rem;
-} */
+}
 .breadCrumbs span{
   font-size: 16px;
   color: gray;
@@ -298,12 +298,12 @@ span {
 #MessIcon{
   margin-right: 0.5rem;
 }
-/* .MuiSwitch-root.MuiSwitch-sizeMedium.css-julti5-MuiSwitch-root{
+.MuiSwitch-root.MuiSwitch-sizeMedium.css-julti5-MuiSwitch-root{
   width: 5rem;
-} */
-.css-ecvcn9{
+}
+/* .css-ecvcn9{
 width: 5rem;
 }
 .byDate .css-ecvcn9{
   margin-left: 2.5rem;
-}
+} */
