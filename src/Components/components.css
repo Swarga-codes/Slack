@@ -279,6 +279,9 @@ span {
 /* ::-webkit-scrollbar{
   border-radius: 10px;
 } */
+.mention {
+  background-color: #FFC898;
+}
 .card-text {
   white-space: pre-line;
 }
