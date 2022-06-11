@@ -43,7 +43,8 @@ const[DateFilter, setDateFilter] = useState("");
 const[monthFilter, setMonthFilter] = useState("");
 const[yearFilter, setYearFilter] = useState("");
   let list = [];
-  const trialFetch = async (Swarga) => {
+  const [emojis, setEmojis] = useState({});
+  const trialFetch = async(Swarga) => {
     // const day = getDate();
     // const month = getMonth();
     // const year = getFullYear();
@@ -102,6 +103,18 @@ const[yearFilter, setYearFilter] = useState("");
     let data = await response.data;
     setTest(data);
   }
+ 
+
+const emojiFetch = async () => {
+  const result = await axios.get(
+    "https://slackbackend.taparia11.repl.co/api/data/fetchallemoji"
+  );
+  console.log(result.data[0]);
+  setEmojis(result.data[0]);
+};
+const getEmoji = (name) => {
+  return emojis[name];
+};
 
   const userFetch = async () => {
     const result = await axios.get(
@@ -136,11 +149,13 @@ const[yearFilter, setYearFilter] = useState("");
     setThread(true);
   }
 
-  useEffect(() => {
-    trialFetch(urlLink.slice(32, fl));
-    // normalFetch(urlLink.slice(32,fl));   //(for localhost)
-    normalFetch(urlLink.slice(32, fl));
-  }, []);
+useEffect(() => {
+  const channel = urlLink.split("/").pop();
+  trialFetch(channel);
+  normalFetch(channel);
+  userFetch();
+  emojiFetch();
+}, []);
   return (
     <div className="dataContent">
       <div className="archive">
@@ -258,162 +273,127 @@ const[yearFilter, setYearFilter] = useState("");
       </div>
       <div className="MessSection">
         <div className="messageBundle">
-          {test
-            .filter((post) => {
-              let ik = "name";
-              let timeStamp = "";
-            let merge,mergeSlice,t1,t2;
-              // let t1 = timeStamp.toString().slice(0,10)
-              // let t2 = timeStamp.toString().slice(11,14)
-              try {
-                // console.log(new Date(timeStamp))
-                ik = post.user_profile.real_name;
-                timeStamp = post.thread_ts;
-                 t1=timeStamp.slice(0,10).toString();
-                t2 = timeStamp.slice(11,14).toString();
-               merge = new Date(parseInt(t1+t2)).toString();
-               console.log(merge.slice(11,15))
-              //  mergeSlice = merge.slice(8,10);
-                // console.log(merge.slice(8,10))
-                // console.log(DateFilter);
-                // != undefined ? post.user_profile.real_name : 0;
-              } catch (error) {
-                console.log("Error hai");
+         
+{test
+  .filter((post) => {
+    let ik = "name";
+    let timeStamp = "";
+  let merge,mergeSlice,t1,t2;
+    // let t1 = timeStamp.toString().slice(0,10)
+    // let t2 = timeStamp.toString().slice(11,14)
+    try {
+      // console.log(new Date(timeStamp))
+      ik = post.user_profile.real_name;
+      timeStamp = post.thread_ts;
+       t1=timeStamp.slice(0,10).toString();
+      t2 = timeStamp.slice(11,14).toString();
+     merge = new Date(parseInt(t1+t2)).toString();
+     console.log(merge.slice(11,15))
+    //  mergeSlice = merge.slice(8,10);
+      // console.log(merge.slice(8,10))
+      // console.log(DateFilter);
+      // != undefined ? post.user_profile.real_name : 0;
+    } catch (error) {
+      console.log("Error hai");
+    }
+    // let na = test.filter(user => Object.values(user.user_profile).reduce((a,b,c,d) => d).toLowerCase().includes(query.toLowerCase()));
+    // console.log(ik)
+    if (query === "" && channelquery === "" && DateFilter === "") {
+      return post;
+    } else if (
+      post.text.toLowerCase().includes(query.toLowerCase()) &&
+      channelquery === "" && DateFilter===""
+    ) {
+      return post;
+    } else if (
+      ik.toLowerCase().includes(channelquery.toLowerCase()) &&
+      query === "" && DateFilter===""
+    ) {
+      return post;
+    } 
+
+   else if(new Date(parseInt(t1+t2)).toString().slice(8,10).includes(DateFilter.toString().toLowerCase()) && new Date(parseInt(t1+t2)).toString().slice(4,7).toLowerCase().includes(months[monthFilter].toString().toLowerCase()) && new Date(parseInt(t1+t2)).toString().slice(11,15).includes(yearFilter.toString().toLowerCase()) && query ==="" && channelquery === ""){
+    return post;
+   }
+  }).sort((a, b) => {
+        if (!a.ts) return 1;
+        if (!b.ts) return -1;
+        return parseInt(a.ts) - parseInt(b.ts);
+      }).map((element,list,test,count) => {    //     const filterArray = element.filter((element,id) => 
+      //     element.id !== id);
+      //     setArticles(filterArray);
+  // for(let i=0;i<list.length;i++){
+    if (!element.parent_user_id) {  
+    try{ 
+      // console.log(test)
+      var iTime = element.thread_ts.slice(0,10).toString()
+      var fTime = element.thread_ts.slice(11,14).toString()
+      // var userTime = parseInt(iTime+fTime)
+      // var userDate = new Date(parseInt(iTime+fTime));
+      // console.log(new Date(parseInt(iTime+fTime)))
+                          return(                         
+//   <h2>Hello</h2>
+          // <h1 key={element.id}>{element.id}</h1>
+         <>
+                          {/*<Message user={element['user']} message={element.text} time={element.thread_ts}/>*/}
+          <Message nreq={test.length} userid={element.user} user={element.user_profile.real_name} blocks={element.blocks} getUserProfile={getUserProfile} getEmoji={getEmoji} time={element.thread_ts.slice(0,10)} time1={parseInt(iTime+fTime)} avatar={element.user_profile.image_72} data={test} thread={element.thread_ts > 1 ? element.thread_ts : 0}/>   
+          {element.thread_ts ? <button className={`ThreadBtn ${element.user}`} id={`${element.thread_ts}`} onClick={addComponent}><svg xmlns="http://www.w3.org/2000/svg" id='MessIcon'  width="16" height="16" fill="currentColor" class="bi bi-chat-left-fill" viewBox="0 0 16 16">
+          <path d="M2 0a2 2 0 0 0-2 2v12.793a.5.5 0 0 0 .854.353l2.853-2.853A1 1 0 0 1 4.414 12H14a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z"/>
+        </svg>{element.reply_users_count} Replies</button> : <h4></h4>}
+</>)
               }
-              // let na = test.filter(user => Object.values(user.user_profile).reduce((a,b,c,d) => d).toLowerCase().includes(query.toLowerCase()));
-              // console.log(ik)
-              if (query === "" && channelquery === "" && DateFilter === "") {
-                return post;
-              } else if (
-                post.text.toLowerCase().includes(query.toLowerCase()) &&
-                channelquery === "" && DateFilter===""
-              ) {
-                return post;
-              } else if (
-                ik.toLowerCase().includes(channelquery.toLowerCase()) &&
-                query === "" && DateFilter===""
-              ) {
-                return post;
-              } 
-
-             else if(new Date(parseInt(t1+t2)).toString().slice(8,10).includes(DateFilter.toString().toLowerCase()) && new Date(parseInt(t1+t2)).toString().slice(4,7).toLowerCase().includes(months[monthFilter].toString().toLowerCase()) && new Date(parseInt(t1+t2)).toString().slice(11,15).includes(yearFilter.toString().toLowerCase()) && query ==="" && channelquery === ""){
-              return post;
-             }
-            })
-            .map((element, list, test, count) => {
-              //     const filterArray = element.filter((element,id) =>
-              //     element.id !== id);
-              //     setArticles(filterArray);
-              // for(let i=0;i<list.length;i++){
-              if (!element.parent_user_id) {
-                try {
-                  // console.log(test)
-                  let iTime = element.thread_ts.slice(0, 10).toString();
-                  let fTime = element.thread_ts.slice(11, 14).toString();
-                  let finalTime = new Date(parseInt(iTime+fTime)).toString();
-                  // console.log(finalTime)
-
-                  
-                  // var userTime = parseInt(iTime+fTime)
-                  // var userDate = new Date(parseInt(iTime+fTime));
-                  // console.log(new Date(parseInt(iTime+fTime)))
-                  return (
-                    //   <h2>Hello</h2>
-                    // <h1 key={element.id}>{element.id}</h1>
-                    <>
-                      {/*<Message user={element['user']} message={element.text} time={element.thread_ts}/>*/}
-                      <Message
-                        nreq={test.length}
-                        userid={element.user}
-                        user={element.user_profile.real_name}
-                        blocks={element.blocks}
-                        getUserProfile={getUserProfile}
-                        time={element.thread_ts.slice(0, 10)}
-                        time1={parseInt(iTime + fTime)}
-                        avatar={element.user_profile.image_72}
-                        data={test}
-                        thread={element.thread_ts > 1 ? element.thread_ts : 0}
-                      />
-                      {element.thread_ts ? (
-                        <button
-                          className={`ThreadBtn ${element.user}`}
-                          id={`${element.thread_ts}`}
-                          onClick={addComponent}
-                        >
-                          <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            id="MessIcon"
-                            width="16"
-                            height="16"
-                            fill="currentColor"
-                            class="bi bi-chat-left-fill"
-                            viewBox="0 0 16 16"
-                          >
-                            <path d="M2 0a2 2 0 0 0-2 2v12.793a.5.5 0 0 0 .854.353l2.853-2.853A1 1 0 0 1 4.414 12H14a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z" />
-                          </svg>
-                          {element.reply_users_count} Replies
-                        </button>
-                      ) : (
-                        <h4></h4>
-                      )}
-                    </>
-                  );
-                } catch (err) {
-                  console.log("error occured");
-                }
-                // }
-              }
-            })}{" "}
-        </div>
-        {thread === true ? (
-          <div className="threadmess">
-            <div className="threadHead">
-              <div>
-                <h1>Thread</h1>
-              </div>
-              <div
-                className="cross"
-                onClick={() => {
-                  setThread(false);
-                  setThreadCrumb(false);
-                }}
-              >
-                <p>X</p>
-              </div>
-            </div>
-            <div className="ThreadContainer">
-              {components.map((elmt) => {
-                console.log(uniquei);
-                if (
-                  uniquei === elmt.thread_ts &&
-                  uniquec === elmt.parent_user_id
-                ) {
-                  try {
-                    var iTime = elmt.ts.slice(0, 10).toString();
-                    var fTime = elmt.ts.slice(11, 14).toString();
-
-                    return (
-                      <>
-                        <Thread
-                          user={elmt.user_profile.real_name}
-                          blocks={elmt.blocks}
-                          getUserProfile={getUserProfile}
-                          time={parseInt(iTime + fTime)}
-                          avatar={elmt.user_profile.image_72}
-                        />
-                      </>
-                    );
-                  } catch (err) {
-                    console.log("error occured");
-                  }
-                }
-                // props.thread
-              })}
-            </div>
-          </div>
-        ) : (
-          <div></div>
-        )}
+                          catch(err){
+                            console.log('error occured');
+                          }
+                          // }
+                        
+                        }   })
+      } </div>
+      {thread === true?
+    <div className="threadmess">
+    <div className='threadHead'>
+    <div>
+      <h1>Thread</h1>
+    
+      </div>
+      <div className='cross' onClick={() => {
+        setThread(false)
+      setThreadCrumb(false)
+      }}>
+      <p>X</p>
+      </div>
+      </div>
+      <div className="ThreadContainer">
+    {components
+      .sort((a, b) => {
+        if (!a.ts) return 1;
+        if (!b.ts) return -1;
+        return parseInt(a.ts) - parseInt(b.ts);
+      }).map((elmt)=>{
+      console.log(uniquei)
+      if ( uniquei == elmt.thread_ts  && uniquec == elmt.parent_user_id ) {
+      
+        try{var iTime = elmt.ts.slice(0,10).toString()
+          var fTime = elmt.ts.slice(11,14).toString()
+                              return( 
+                                <>
+                <Thread user={elmt.user_profile.real_name} blocks={elmt.blocks} getUserProfile={getUserProfile} getEmoji={getEmoji} time={parseInt(iTime+fTime)} avatar={elmt.user_profile.image_72} />
+              
+            </>
+              )
+                              }
+                              catch(err){
+                                console.log('error occured');
+                              }
+      }
+      // props.thread 
+      
+    })}
+     </div>
+      </div>
+      :
+      <div></div>
+  }
       </div>
     </div>
   );

@@ -1,13 +1,21 @@
-export const processBlocks = (blocks, getUserProfile) => {
+import { decode } from "html-entities";
+
+export const processBlocks = (blocks, getUserProfile, getEmoji) => {
   blocks = blocks[0].elements;
 
   const processLink = (block) => {
     return <a href={block.url}>{block.text}</a>;
   };
   const processMention = (block) => {
-    return `@${getUserProfile(block.user_id)?.real_name}`;
+    return (
+      <text className="mention">
+        @{getUserProfile(block.user_id)?.real_name}
+      </text>
+    );
   };
-  const processEmoji = (block) => {};
+  const processEmoji = (block) => {
+    return decode(getEmoji(block.name));
+  };
   const processSection = (block) => {
     if (block.type === "text") return block.text;
     if (block.type === "link") return processLink(block);
