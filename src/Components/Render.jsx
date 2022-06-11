@@ -116,12 +116,12 @@ function addComponent(e) {
   setThread(true)
 }
 
-useEffect(()=>{
-trialFetch(urlLink.slice(32,fl));
-// normalFetch(urlLink.slice(32,fl));   //(for localhost)
-normalFetch(urlLink.slice(32,fl));
-userFetch();
-},[])
+useEffect(() => {
+  const channel = urlLink.split("/").pop();
+  trialFetch(channel);
+  normalFetch(channel);
+  userFetch();
+}, []);
   return (
     <div className='dataContent'>
     <div className="archive">
