@@ -117,9 +117,9 @@ function addComponent(e) {
 }
 
 useEffect(()=>{
-trialFetch(urlLink.slice(22,fl));
+trialFetch(urlLink.slice(32,fl));
 // normalFetch(urlLink.slice(32,fl));   //(for localhost)
-normalFetch(urlLink.slice(22,fl));
+normalFetch(urlLink.slice(32,fl));
 userFetch();
 },[])
   return (
