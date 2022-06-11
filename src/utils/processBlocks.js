@@ -1,4 +1,6 @@
-export const processBlocks = (blocks, getUserProfile) => {
+import { decode } from "html-entities";
+
+export const processBlocks = (blocks, getUserProfile, getEmoji) => {
   blocks = blocks[0].elements;
 
   const processLink = (block) => {
@@ -11,7 +13,9 @@ export const processBlocks = (blocks, getUserProfile) => {
       </text>
     );
   };
-  const processEmoji = (block) => {};
+  const processEmoji = (block) => {
+    return decode(getEmoji(block.name));
+  };
   const processSection = (block) => {
     if (block.type === "text") return block.text;
     if (block.type === "link") return processLink(block);
