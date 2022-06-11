@@ -217,7 +217,11 @@ Filter by dates
           return post;
         }
       }
-      ).map((element,list,test,count) => {    //     const filterArray = element.filter((element,id) => 
+      ).sort((a, b) => {
+        if (!a.ts) return 1;
+        if (!b.ts) return -1;
+        return parseInt(a.ts) - parseInt(b.ts);
+      }).map((element,list,test,count) => {    //     const filterArray = element.filter((element,id) => 
       //     element.id !== id);
       //     setArticles(filterArray);
   // for(let i=0;i<list.length;i++){
@@ -262,7 +266,12 @@ Filter by dates
       </div>
       </div>
       <div className="ThreadContainer">
-    {components.map((elmt)=>{
+    {components
+      .sort((a, b) => {
+        if (!a.ts) return 1;
+        if (!b.ts) return -1;
+        return parseInt(a.ts) - parseInt(b.ts);
+      }).map((elmt)=>{
       console.log(uniquei)
       if ( uniquei == elmt.thread_ts  && uniquec == elmt.parent_user_id ) {
       

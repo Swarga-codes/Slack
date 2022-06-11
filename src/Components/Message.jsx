@@ -106,7 +106,12 @@ const removeComponent = (e) =>{
         )
         })}  */}
        
-{components.map((elmt)=>{
+{components
+      .sort((a, b) => {
+        if (!a.ts) return 1;
+        if (!b.ts) return -1;
+        return parseInt(a.ts) - parseInt(b.ts);
+      }).map((elmt)=>{
       if ( props.thread == elmt.thread_ts  && props.userid == elmt.parent_user_id ) {
       
         try{
