@@ -5,7 +5,11 @@ export const processBlocks = (blocks, getUserProfile) => {
     return <a href={block.url}>{block.text}</a>;
   };
   const processMention = (block) => {
-    return `@${getUserProfile(block.user_id)?.real_name}`;
+    return (
+      <text className="mention">
+        @{getUserProfile(block.user_id)?.real_name}
+      </text>
+    );
   };
   const processEmoji = (block) => {};
   const processSection = (block) => {
