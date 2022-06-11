@@ -1,4 +1,5 @@
 import React from 'react'
+import { processBlocks } from '../utils/processBlocks'
 
 const Thread = (props) => {
   return (
@@ -11,7 +12,7 @@ const Thread = (props) => {
     <div className="card-body">
     <h5 className="card-title">{props.user}  <span className="card-text"><small className="text-muted">{`${new Date(props.time)}`}</small></span></h5>
     
-      <p className="card-text">{props.message}</p>
+      <p className="card-text">{processBlocks(props.blocks, props.getUserProfile)}</p>
     
    
     </div>
