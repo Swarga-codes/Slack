@@ -24,6 +24,7 @@ const Render = () => {
   const[thread, setThread] = useState(false)
   const [timeValue, settimeValue] = useState("")
   const [users, setUsers] = useState({});
+  const [emojis, setEmojis] = useState({});
 
   
   let list = []
@@ -100,6 +101,16 @@ const userFetch = async () => {
 const getUserProfile = (id) => {
   return users[id];
 };
+const emojiFetch = async () => {
+  const result = await axios.get(
+    "https://slackbackend.taparia11.repl.co/api/data/fetchallemoji"
+  );
+  console.log(result.data[0]);
+  setEmojis(result.data[0]);
+};
+const getEmoji = (name) => {
+  return emojis[name];
+};
 
 function addComponent(e) { 
   // refclose.current.click();
@@ -121,6 +132,7 @@ useEffect(() => {
   trialFetch(channel);
   normalFetch(channel);
   userFetch();
+  emojiFetch();
 }, []);
   return (
     <div className='dataContent'>
@@ -238,7 +250,7 @@ Filter by dates
           // <h1 key={element.id}>{element.id}</h1>
          <>
                           {/*<Message user={element['user']} message={element.text} time={element.thread_ts}/>*/}
-          <Message nreq={test.length} userid={element.user} user={element.user_profile.real_name} blocks={element.blocks} getUserProfile={getUserProfile} time={element.thread_ts.slice(0,10)} time1={parseInt(iTime+fTime)} avatar={element.user_profile.image_72} data={test} thread={element.thread_ts > 1 ? element.thread_ts : 0}/>   
+          <Message nreq={test.length} userid={element.user} user={element.user_profile.real_name} blocks={element.blocks} getUserProfile={getUserProfile} getEmoji={getEmoji} time={element.thread_ts.slice(0,10)} time1={parseInt(iTime+fTime)} avatar={element.user_profile.image_72} data={test} thread={element.thread_ts > 1 ? element.thread_ts : 0}/>   
           {element.thread_ts ? <button className={`ThreadBtn ${element.user}`} id={`${element.thread_ts}`} onClick={addComponent}><svg xmlns="http://www.w3.org/2000/svg" id='MessIcon'  width="16" height="16" fill="currentColor" class="bi bi-chat-left-fill" viewBox="0 0 16 16">
           <path d="M2 0a2 2 0 0 0-2 2v12.793a.5.5 0 0 0 .854.353l2.853-2.853A1 1 0 0 1 4.414 12H14a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z"/>
         </svg>{element.reply_users_count} Replies</button> : <h4></h4>}
@@ -279,7 +291,7 @@ Filter by dates
           var fTime = elmt.ts.slice(11,14).toString()
                               return( 
                                 <>
-                <Thread user={elmt.user_profile.real_name} blocks={elmt.blocks} getUserProfile={getUserProfile} time={parseInt(iTime+fTime)} avatar={elmt.user_profile.image_72} />
+                <Thread user={elmt.user_profile.real_name} blocks={elmt.blocks} getUserProfile={getUserProfile} getEmoji={getEmoji} time={parseInt(iTime+fTime)} avatar={elmt.user_profile.image_72} />
               
             </>
               )
