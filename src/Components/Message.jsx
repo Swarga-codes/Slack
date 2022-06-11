@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './components.css'
-import { processLinks } from '../utils/processLinks'
+import { processBlocks } from '../utils/processBlocks'
 import Thread from './Thread';
 const Message = (props) => {
   const Navigate =  useNavigate();
@@ -83,7 +83,7 @@ const removeComponent = (e) =>{
     //   ":"+date.getSeconds()
       }</small></span></h5>
     
-      <p className="card-text">{processLinks(props.message)}</p>
+      <p className="card-text">{processBlocks(props.blocks, props.getUserProfile)}</p>
    
     
     {/* {props.thread ? <button className='ThreadBtn' onClick={addComponent}>View Thread</button> : <h4></h4>} */}
@@ -112,7 +112,7 @@ const removeComponent = (e) =>{
         try{
                               return( 
                                 <>
-                <Thread user={elmt.user_profile.real_name} message={elmt.text} time={elmt.thread_ts} avatar={elmt.user_profile.image_72} />
+                <Thread user={elmt.user_profile.real_name} blocks={elmt.blocks} getUserProfile={props.getUserProfile} time={elmt.thread_ts} avatar={elmt.user_profile.image_72} />
               
             </>
               )

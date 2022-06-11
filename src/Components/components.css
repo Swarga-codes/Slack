@@ -279,6 +279,9 @@ span {
 /* ::-webkit-scrollbar{
   border-radius: 10px;
 } */
+.card-text {
+  white-space: pre-line;
+}
 .card-text:last-child {
   margin-bottom: 0;
   width: 90%;
