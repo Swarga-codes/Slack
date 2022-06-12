@@ -165,7 +165,7 @@ useEffect(() => {
           {threadCrumb === false ? (
             <p className="breadCrumbs">
               <span onClick={() => navigation(-1)}>All</span>&nbsp; &nbsp; &gt;
-              &nbsp; &nbsp;<span>#{urlLink.slice(32, fl)}</span>
+              &nbsp; &nbsp;<span>#{urlLink.slice(22, fl)}</span>
             </p>
           ) : (
             <p className="breadCrumbs">
@@ -184,7 +184,7 @@ useEffect(() => {
                   setThreadCrumb(false);
                 }}
               >
-                #{urlLink.slice(32, fl)}
+                #{urlLink.slice(22, fl)}
               </span>
               &nbsp; &nbsp; &gt; &nbsp; &nbsp; Thread
             </p>
@@ -242,7 +242,7 @@ useEffect(() => {
             <label htmlFor="">In channel</label>
             <select id="channels" name="channels">
               <option value="all">All channels</option>
-              <option value="current">{urlLink.slice(32, fl)}</option>
+              <option value="current">{urlLink.slice(22, fl)}</option>
             </select>
             <label htmlFor="">From user</label>
             <input
@@ -288,33 +288,58 @@ useEffect(() => {
        t1=timeStamp.slice(0,10).toString();
       t2 = timeStamp.slice(11,14).toString();
      merge = new Date(parseInt(t1+t2)).toString();
-     console.log(merge.slice(11,15))
+    //  console.log(merge.slice(11,15))
     //  mergeSlice = merge.slice(8,10);
       // console.log(merge.slice(8,10))
       // console.log(DateFilter);
       // != undefined ? post.user_profile.real_name : 0;
     } catch (error) {
-      console.log("Error hai");
+      // console.log("Error hai");
     }
     // let na = test.filter(user => Object.values(user.user_profile).reduce((a,b,c,d) => d).toLowerCase().includes(query.toLowerCase()));
     // console.log(ik)
-    if (query === "" && channelquery === "" && DateFilter === "") {
+    try{
+    if (query === "" && channelquery === "" && DateFilter === "" && monthFilter ==="" && yearFilter ==="") {
+     
       return post;
-    } else if (
+    }    else if (
       post.text.toLowerCase().includes(query.toLowerCase()) &&
-      channelquery === "" && DateFilter===""
+      channelquery === "" && query!=""
+      && DateFilter==="" && monthFilter ==="" && yearFilter ===""
     ) {
+      
       return post;
     } else if (
       ik.toLowerCase().includes(channelquery.toLowerCase()) &&
-      query === "" && DateFilter===""
+      query === "" && channelquery!=""
+      && DateFilter==="" && monthFilter ==="" && yearFilter ===""
     ) {
+   
       return post;
     } 
-
-   else if(new Date(parseInt(t1+t2)).toString().slice(8,10).includes(DateFilter.toString().toLowerCase()) && new Date(parseInt(t1+t2)).toString().slice(4,7).toLowerCase().includes(months[monthFilter].toString().toLowerCase()) && new Date(parseInt(t1+t2)).toString().slice(11,15).includes(yearFilter.toString().toLowerCase()) && query ==="" && channelquery === ""){
+   else if (
+    post.text.toLowerCase().includes(query.toLowerCase()) &&
+     ik.toLowerCase().includes(channelquery.toLowerCase()) && DateFilter==="" && monthFilter ==="" && yearFilter ===""
+  ) {
+   
     return post;
-   }
+  }    
+     else if(new Date(parseInt(t1+t2)).toString().slice(8,10).includes(DateFilter.toString().toLowerCase()) && new Date(parseInt(t1+t2)).toString().slice(4,7).toLowerCase().includes(months[monthFilter].toString().toLowerCase()) && new Date(parseInt(t1+t2)).toString().slice(11,15).includes(yearFilter.toString().toLowerCase()) &&  post.text.toLowerCase().includes(query.toLowerCase()) && ik.toLowerCase().includes(channelquery.toLowerCase()) && query!="" && channelquery!=""){
+      
+      return post;
+     }  else if(new Date(parseInt(t1+t2)).toString().slice(8,10).includes(DateFilter.toString().toLowerCase()) && new Date(parseInt(t1+t2)).toString().slice(4,7).toLowerCase().includes(months[monthFilter].toString().toLowerCase()) && new Date(parseInt(t1+t2)).toString().slice(11,15).includes(yearFilter.toString().toLowerCase()) &&  post.text.toLowerCase().includes(query.toLowerCase()) && channelquery === "" && query!=""){
+     
+      return post;
+     }else if(new Date(parseInt(t1+t2)).toString().slice(8,10).includes(DateFilter.toString().toLowerCase()) && new Date(parseInt(t1+t2)).toString().slice(4,7).toLowerCase().includes(months[monthFilter].toString().toLowerCase()) && new Date(parseInt(t1+t2)).toString().slice(11,15).includes(yearFilter.toString().toLowerCase()) && query ==="" &&  ik.toLowerCase().includes(channelquery.toLowerCase()) && channelquery!=""){
+      return post;
+     }
+     else if(new Date(parseInt(t1+t2)).toString().slice(8,10).includes(DateFilter.toString().toLowerCase()) && new Date(parseInt(t1+t2)).toString().slice(4,7).toLowerCase().includes(months[monthFilter].toString().toLowerCase()) && new Date(parseInt(t1+t2)).toString().slice(11,15).includes(yearFilter.toString().toLowerCase()) && query ==="" && channelquery === ""){
+      return post;
+     }
+    }
+    catch(err){
+      // console.log("Error Lag Gyaaa............")
+    }
   }).sort((a, b) => {
         if (!a.ts) return 1;
         if (!b.ts) return -1;
@@ -343,7 +368,7 @@ useEffect(() => {
 </>)
               }
                           catch(err){
-                            console.log('error occured');
+                            // console.log('error occured');
                           }
                           // }
                         
