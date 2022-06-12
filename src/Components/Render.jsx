@@ -8,6 +8,7 @@ import Thread from "./Thread";
 import axios from "axios";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
+import { formatDate } from "../utils/formatDate";
 const label = { inputProps: { "aria-label": "Switch demo" } };
 
 const Render = () => {
@@ -97,7 +98,7 @@ const[yearFilter, setYearFilter] = useState("");
   async function normalFetch(Swarga) {
     // console.log("HII")
     let response = await axios.get(
-      `https://slackbackend.taparia11.repl.co/api/data/fetch${Swarga}`
+      `https://slackbackend.taparia11.repl.co/api/data/dynamic/collections/${Swarga}`
     );
     console.log(response);
     let data = await response.data;
@@ -315,40 +316,82 @@ useEffect(() => {
    else if(new Date(parseInt(t1+t2)).toString().slice(8,10).includes(DateFilter.toString().toLowerCase()) && new Date(parseInt(t1+t2)).toString().slice(4,7).toLowerCase().includes(months[monthFilter].toString().toLowerCase()) && new Date(parseInt(t1+t2)).toString().slice(11,15).includes(yearFilter.toString().toLowerCase()) && query ==="" && channelquery === ""){
     return post;
    }
-  }).sort((a, b) => {
-        if (!a.ts) return 1;
-        if (!b.ts) return -1;
-        return parseInt(a.ts) - parseInt(b.ts);
-      }).map((element,list,test,count) => {    //     const filterArray = element.filter((element,id) => 
-      //     element.id !== id);
-      //     setArticles(filterArray);
-  // for(let i=0;i<list.length;i++){
-    if (!element.parent_user_id) {  
-    try{ 
-      // console.log(test)
-      var iTime = element.thread_ts.slice(0,10).toString()
-      var fTime = element.thread_ts.slice(11,14).toString()
-      // var userTime = parseInt(iTime+fTime)
-      // var userDate = new Date(parseInt(iTime+fTime));
-      // console.log(new Date(parseInt(iTime+fTime)))
-                          return(                         
-//   <h2>Hello</h2>
-          // <h1 key={element.id}>{element.id}</h1>
-         <>
-                          {/*<Message user={element['user']} message={element.text} time={element.thread_ts}/>*/}
-          <Message nreq={test.length} userid={element.user} user={element.user_profile.real_name} blocks={element.blocks} attachments={element.attachments} getUserProfile={getUserProfile} getEmoji={getEmoji} time={element.thread_ts.slice(0,10)} time1={parseInt(iTime+fTime)} avatar={element.user_profile.image_72} data={test} thread={element.thread_ts > 1 ? element.thread_ts : 0}/>   
-          {element.thread_ts ? <button className={`ThreadBtn ${element.user}`} id={`${element.thread_ts}`} onClick={addComponent}><svg xmlns="http://www.w3.org/2000/svg" id='MessIcon'  width="16" height="16" fill="currentColor" class="bi bi-chat-left-fill" viewBox="0 0 16 16">
-          <path d="M2 0a2 2 0 0 0-2 2v12.793a.5.5 0 0 0 .854.353l2.853-2.853A1 1 0 0 1 4.414 12H14a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z"/>
-        </svg>{element.reply_users_count} Replies</button> : <h4></h4>}
-</>)
-              }
-                          catch(err){
-                            console.log('error occured');
-                          }
-                          // }
-                        
-                        }   })
-      } </div>
+  }).filter((a) => {
+    if (!a.parent_user_id) return a;
+  })
+  .sort((a, b) => {
+    if (!a.ts) return 1;
+    if (!b.ts) return -1;
+    return parseInt(a.ts) - parseInt(b.ts);
+  })
+  .map((element, idx, test) => {
+      try {
+        const result = [];
+        if (idx != 0) {
+          const curDate = new Date(parseInt(element.ts) * 1000);
+          const prevDate = new Date(parseInt(test[idx - 1].ts) * 1000);
+
+          let cur = formatDate(curDate);
+          let prev = formatDate(prevDate);
+
+          if (cur != prev)
+            result.push(
+              <div className="date">
+                <text>{cur}</text>
+              </div>
+            );
+        }
+        
+        var iTime = element.thread_ts.slice(0, 10).toString();
+        var fTime = element.thread_ts.slice(11, 14).toString();
+
+        result.push(
+          <>
+            <Message
+              nreq={test.length}
+              userid={element.user}
+              user={element.user_profile.real_name}
+              blocks={element.blocks}
+              attachments={element.attachments}
+              getUserProfile={getUserProfile}
+              getEmoji={getEmoji}
+              time={element.thread_ts.slice(0, 10)}
+              time1={parseInt(iTime + fTime)}
+              avatar={element.user_profile.image_72}
+              data={test}
+              thread={element.thread_ts > 1 ? element.thread_ts : 0}
+            />
+            {element.thread_ts ? (
+              <button
+                className={`ThreadBtn ${element.user}`}
+                id={`${element.thread_ts}`}
+                onClick={addComponent}
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  id="MessIcon"
+                  width="16"
+                  height="16"
+                  fill="currentColor"
+                  class="bi bi-chat-left-fill"
+                  viewBox="0 0 16 16"
+                >
+                  <path d="M2 0a2 2 0 0 0-2 2v12.793a.5.5 0 0 0 .854.353l2.853-2.853A1 1 0 0 1 4.414 12H14a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z" />
+                </svg>
+                {element.reply_users_count} Replies
+              </button>
+            ) : (
+              <h4></h4>
+            )}
+          </>
+        );
+        return result;
+      } catch (err) {
+        console.log("error occured");
+      }
+  })}
+</div>
+
       {thread === true?
     <div className="threadmess">
     <div className='threadHead'>
