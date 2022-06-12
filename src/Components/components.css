@@ -300,6 +300,8 @@ span {
 .embed {
   border: 0px;
   border-left: 4px;
+  border-radius: 3px;
+  margin-top: 7px;
   padding-left: 12px;
   border-style: ridge;
 }
