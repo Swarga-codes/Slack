@@ -64,6 +64,26 @@ const removeComponent = (e) =>{
   props.fun(false);
   e.preventDefault();
 }
+
+const processAttachments = () => {
+  if (!props.attachments) return;
+
+  for (const attachment of props.attachments) {
+    console.log(attachment);
+    return (
+      <div className="embed">
+        <div>
+          <img src={attachment.service_icon} className="embed-service-icon" />
+          <text className="embed-service">{attachment.service_name}</text>
+        </div>
+        <a href={attachment.title_link} className="embed-link link">
+          {attachment.title}
+        </a>
+        <p>{attachment.text}</p>
+      </div>
+    );
+  }
+};
   return (
 
     <div className="Card mb-5" >
@@ -85,6 +105,7 @@ const removeComponent = (e) =>{
     
       <p className="card-text">{processBlocks(props.blocks, props.getUserProfile, props.getEmoji)}</p>
    
+      {processAttachments()}
     
     {/* {props.thread ? <button className='ThreadBtn' onClick={addComponent}>View Thread</button> : <h4></h4>} */}
     </div>
