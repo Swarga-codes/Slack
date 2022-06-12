@@ -276,7 +276,7 @@ useEffect(() => {
         <div className="messageBundle">
          
 {test
-  .filter((post) => {
+  .filter((post) =>{
     let ik = "name";
     let timeStamp = "";
   let merge,mergeSlice,t1,t2;
@@ -289,33 +289,58 @@ useEffect(() => {
        t1=timeStamp.slice(0,10).toString();
       t2 = timeStamp.slice(11,14).toString();
      merge = new Date(parseInt(t1+t2)).toString();
-     console.log(merge.slice(11,15))
+    //  console.log(merge.slice(11,15))
     //  mergeSlice = merge.slice(8,10);
       // console.log(merge.slice(8,10))
       // console.log(DateFilter);
       // != undefined ? post.user_profile.real_name : 0;
     } catch (error) {
-      console.log("Error hai");
+      // console.log("Error hai");
     }
     // let na = test.filter(user => Object.values(user.user_profile).reduce((a,b,c,d) => d).toLowerCase().includes(query.toLowerCase()));
     // console.log(ik)
-    if (query === "" && channelquery === "" && DateFilter === "") {
+    try{
+    if (query === "" && channelquery === "" && DateFilter === "" && monthFilter ==="" && yearFilter ==="") {
+     
       return post;
-    } else if (
+    }    else if (
       post.text.toLowerCase().includes(query.toLowerCase()) &&
-      channelquery === "" && DateFilter===""
+      channelquery === "" && query!=""
+      && DateFilter==="" && monthFilter ==="" && yearFilter ===""
     ) {
+      
       return post;
     } else if (
       ik.toLowerCase().includes(channelquery.toLowerCase()) &&
-      query === "" && DateFilter===""
+      query === "" && channelquery!=""
+      && DateFilter==="" && monthFilter ==="" && yearFilter ===""
     ) {
+   
       return post;
     } 
-
-   else if(new Date(parseInt(t1+t2)).toString().slice(8,10).includes(DateFilter.toString().toLowerCase()) && new Date(parseInt(t1+t2)).toString().slice(4,7).toLowerCase().includes(months[monthFilter].toString().toLowerCase()) && new Date(parseInt(t1+t2)).toString().slice(11,15).includes(yearFilter.toString().toLowerCase()) && query ==="" && channelquery === ""){
+   else if (
+    post.text.toLowerCase().includes(query.toLowerCase()) &&
+     ik.toLowerCase().includes(channelquery.toLowerCase()) && DateFilter==="" && monthFilter ==="" && yearFilter ===""
+  ) {
+   
     return post;
-   }
+  }    
+     else if(new Date(parseInt(t1+t2)).toString().slice(8,10).includes(DateFilter.toString().toLowerCase()) && new Date(parseInt(t1+t2)).toString().slice(4,7).toLowerCase().includes(months[monthFilter].toString().toLowerCase()) && new Date(parseInt(t1+t2)).toString().slice(11,15).includes(yearFilter.toString().toLowerCase()) &&  post.text.toLowerCase().includes(query.toLowerCase()) && ik.toLowerCase().includes(channelquery.toLowerCase()) && query!="" && channelquery!=""){
+      
+      return post;
+     }  else if(new Date(parseInt(t1+t2)).toString().slice(8,10).includes(DateFilter.toString().toLowerCase()) && new Date(parseInt(t1+t2)).toString().slice(4,7).toLowerCase().includes(months[monthFilter].toString().toLowerCase()) && new Date(parseInt(t1+t2)).toString().slice(11,15).includes(yearFilter.toString().toLowerCase()) &&  post.text.toLowerCase().includes(query.toLowerCase()) && channelquery === "" && query!=""){
+     
+      return post;
+     }else if(new Date(parseInt(t1+t2)).toString().slice(8,10).includes(DateFilter.toString().toLowerCase()) && new Date(parseInt(t1+t2)).toString().slice(4,7).toLowerCase().includes(months[monthFilter].toString().toLowerCase()) && new Date(parseInt(t1+t2)).toString().slice(11,15).includes(yearFilter.toString().toLowerCase()) && query ==="" &&  ik.toLowerCase().includes(channelquery.toLowerCase()) && channelquery!=""){
+      return post;
+     }
+     else if(new Date(parseInt(t1+t2)).toString().slice(8,10).includes(DateFilter.toString().toLowerCase()) && new Date(parseInt(t1+t2)).toString().slice(4,7).toLowerCase().includes(months[monthFilter].toString().toLowerCase()) && new Date(parseInt(t1+t2)).toString().slice(11,15).includes(yearFilter.toString().toLowerCase()) && query ==="" && channelquery === ""){
+      return post;
+     }
+    }
+    catch(err){
+      // console.log("Error Lag Gyaaa............")
+    }
   }).filter((a) => {
     if (!a.parent_user_id) return a;
   })
