@@ -3,6 +3,7 @@ import { useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './components.css'
 import { processBlocks } from '../utils/processBlocks'
+import { processAttachments } from '../utils/processAttachments'
 import Thread from './Thread';
 const Message = (props) => {
   const Navigate =  useNavigate();
@@ -64,6 +65,7 @@ const removeComponent = (e) =>{
   props.fun(false);
   e.preventDefault();
 }
+
   return (
 
     <div className="Card mb-5" >
@@ -85,6 +87,7 @@ const removeComponent = (e) =>{
     
       <p className="card-text">{processBlocks(props.blocks, props.getUserProfile, props.getEmoji)}</p>
    
+      {processAttachments(props.attachments)}
     
     {/* {props.thread ? <button className='ThreadBtn' onClick={addComponent}>View Thread</button> : <h4></h4>} */}
     </div>
@@ -117,7 +120,7 @@ const removeComponent = (e) =>{
         try{
                               return( 
                                 <>
-                <Thread user={elmt.user_profile.real_name} blocks={elmt.blocks} getUserProfile={props.getUserProfile} getEmoji={props.getEmoji} time={elmt.thread_ts} avatar={elmt.user_profile.image_72} />
+                <Thread user={elmt.user_profile.real_name} blocks={elmt.blocks} attachments={elmt.attachments} getUserProfile={props.getUserProfile} getEmoji={props.getEmoji} time={elmt.thread_ts} avatar={elmt.user_profile.image_72} />
               
             </>
               )

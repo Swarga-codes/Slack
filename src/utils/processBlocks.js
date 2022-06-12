@@ -4,7 +4,11 @@ export const processBlocks = (blocks, getUserProfile, getEmoji) => {
   blocks = blocks[0].elements;
 
   const processLink = (block) => {
-    return <a href={block.url}>{block.text}</a>;
+    return (
+      <a href={block.url} className="link">
+        {block.text}
+      </a>
+    );
   };
   const processMention = (block) => {
     return (
