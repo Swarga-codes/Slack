@@ -3,6 +3,7 @@ import { useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './components.css'
 import { processBlocks } from '../utils/processBlocks'
+import { processAttachments } from '../utils/processAttachments'
 import Thread from './Thread';
 const Message = (props) => {
   const Navigate =  useNavigate();
@@ -65,41 +66,6 @@ const removeComponent = (e) =>{
   e.preventDefault();
 }
 
-const processAttachments = () => {
-  if (!props.attachments) return;
-
-  const result = [];
-  for (const attachment of props.attachments) {
-    console.log(attachment);
-    result.push(
-      <div className="embed">
-        <div>
-          <img src={attachment.service_icon} className="embed-service-icon" />
-          <text className="embed-service">{attachment.service_name}</text>
-        </div>
-        <a href={attachment.title_link} className="embed-link link">
-          {attachment.title}
-        </a>
-        <p>{attachment.text}</p>
-        {attachment.image_url ? (
-          <img
-            style={{
-              height: "auto",
-              width: "auto",
-              maxHeight:
-                (360 * attachment.image_height) / attachment.image_width,
-              maxWidth: 360,
-            }}
-            src={attachment.image_url}
-          />
-        ) : (
-          ""
-        )}
-      </div>
-    );
-  }
-  return result;
-};
   return (
 
     <div className="Card mb-5" >
@@ -121,7 +87,7 @@ const processAttachments = () => {
     
       <p className="card-text">{processBlocks(props.blocks, props.getUserProfile, props.getEmoji)}</p>
    
-      {processAttachments()}
+      {processAttachments(props.attachments)}
     
     {/* {props.thread ? <button className='ThreadBtn' onClick={addComponent}>View Thread</button> : <h4></h4>} */}
     </div>
@@ -154,7 +120,7 @@ const processAttachments = () => {
         try{
                               return( 
                                 <>
-                <Thread user={elmt.user_profile.real_name} blocks={elmt.blocks} getUserProfile={props.getUserProfile} getEmoji={props.getEmoji} time={elmt.thread_ts} avatar={elmt.user_profile.image_72} />
+                <Thread user={elmt.user_profile.real_name} blocks={elmt.blocks} attachments={elmt.attachments} getUserProfile={props.getUserProfile} getEmoji={props.getEmoji} time={elmt.thread_ts} avatar={elmt.user_profile.image_72} />
               
             </>
               )

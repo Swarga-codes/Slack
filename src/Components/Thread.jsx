@@ -1,5 +1,6 @@
 import React from 'react'
 import { processBlocks } from '../utils/processBlocks'
+import { processAttachments } from '../utils/processAttachments'
 
 const Thread = (props) => {
   return (
@@ -14,6 +15,7 @@ const Thread = (props) => {
     
       <p className="card-text">{processBlocks(props.blocks, props.getUserProfile, props.getEmoji)}</p>
     
+    {processAttachments(props.attachments)}
    
     </div>
     </div>

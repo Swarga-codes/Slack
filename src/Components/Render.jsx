@@ -377,7 +377,7 @@ useEffect(() => {
           var fTime = elmt.ts.slice(11,14).toString()
                               return( 
                                 <>
-                <Thread user={elmt.user_profile.real_name} blocks={elmt.blocks} getUserProfile={getUserProfile} getEmoji={getEmoji} time={parseInt(iTime+fTime)} avatar={elmt.user_profile.image_72} />
+                <Thread user={elmt.user_profile.real_name} blocks={elmt.blocks} attachments={elmt.attachments} getUserProfile={getUserProfile} getEmoji={getEmoji} time={parseInt(iTime+fTime)} avatar={elmt.user_profile.image_72} />
               
             </>
               )
