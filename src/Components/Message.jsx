@@ -68,9 +68,10 @@ const removeComponent = (e) =>{
 const processAttachments = () => {
   if (!props.attachments) return;
 
+  const result = [];
   for (const attachment of props.attachments) {
     console.log(attachment);
-    return (
+    result.push(
       <div className="embed">
         <div>
           <img src={attachment.service_icon} className="embed-service-icon" />
@@ -83,6 +84,7 @@ const processAttachments = () => {
       </div>
     );
   }
+  return result;
 };
   return (
 
