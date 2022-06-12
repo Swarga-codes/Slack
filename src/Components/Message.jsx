@@ -81,6 +81,20 @@ const processAttachments = () => {
           {attachment.title}
         </a>
         <p>{attachment.text}</p>
+        {attachment.image_url ? (
+          <img
+            style={{
+              height: "auto",
+              width: "auto",
+              maxHeight:
+                (360 * attachment.image_height) / attachment.image_width,
+              maxWidth: 360,
+            }}
+            src={attachment.image_url}
+          />
+        ) : (
+          ""
+        )}
       </div>
     );
   }
