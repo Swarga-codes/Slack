@@ -32,6 +32,7 @@ const Render = () => {
   const [exactPhrase, setExactPhrase] = useState(false);
   const [channelFilter, setChannelFilter] = useState("");
   const [userFilter, setUserFilter] = useState("");
+  const [sortFilter, setSortFilter] = useState(1);
   const [dateActivator, setDateActivator] = useState(false);
   const [dateFilter, setDateFilter] = useState({ from_date: 0, to_date: 0 });
 
@@ -175,9 +176,9 @@ const Render = () => {
                 if (valid) return a;
               })
               .sort((a, b) => {
-                if (!a.ts) return 1;
-                if (!b.ts) return -1;
-                return parseInt(a.ts) - parseInt(b.ts);
+                return (
+                  (sortFilter ? 1 : -1) * (parseInt(a.ts) - parseInt(b.ts))
+                );
               })
               .map((elmt) => {
                 var iTime = elmt.ts.slice(0, 10).toString();
@@ -326,7 +327,14 @@ const Render = () => {
             />
             <label htmlFor="">Sort by</label>
             <div>
-              <select id="channels" name="channels">
+              <select
+                id="sortFilter"
+                value={!sortFilter ? "newest" : "oldest"}
+                onChange={(e) => {
+                  if (e.target.selectedIndex != sortFilter)
+                    setSortFilter(e.target.selectedIndex);
+                }}
+              >
                 <option value="newest">Newest First</option>
                 <option value="oldest">Oldest First</option>
               </select>
