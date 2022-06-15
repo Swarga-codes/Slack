@@ -9,6 +9,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { formatDate } from "../utils/formatDate";
 import { getCalendarDate } from "../utils/getCalendarDate";
+import { SearchLoading } from "./SearchLoading";
 import SearchItem from "./SearchItem";
 import TextInput from "react-autocomplete-input";
 import "react-autocomplete-input/dist/bundle.css";
@@ -188,7 +189,7 @@ const Render = () => {
                 if (!elmt.user_profile) return;
                 return (
                   <SearchItem
-                    channel={!elmt.channelFilter ? elmt.channel : ""}
+                    channel={!channelFilter ? elmt.channel : ""}
                     user={elmt.user_profile?.real_name}
                     blocks={elmt.blocks}
                     attachments={elmt.attachments}
@@ -277,17 +278,22 @@ const Render = () => {
             id="dropdownMenuButton1"
             data-bs-toggle="dropdown"
             aria-expanded="false"
+            disabled={!jointData.length}
           >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="16"
-              height="16"
-              fill="currentColor"
-              className="bi bi-search"
-              viewBox="0 0 16 16"
-            >
-              <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z" />
-            </svg>
+            {jointData.length ? (
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="16"
+                height="16"
+                fill="currentColor"
+                className="bi bi-search"
+                viewBox="0 0 16 16"
+              >
+                <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z" />
+              </svg>
+            ) : (
+              <SearchLoading />
+            )}
           </button>
 
           <div className="dropdown-menu" id="drop">
@@ -302,9 +308,10 @@ const Render = () => {
             <select
               id="channels"
               name="channels"
-              value={channelFilter}
+              value={channelFilter ? channelFilter : "all"}
               onChange={(e) => {
                 if (e.target.selectedIndex) setChannelFilter(e.target.value);
+                else setChannelFilter("");
               }}
             >
               <option value="all">All channels</option>
@@ -331,8 +338,7 @@ const Render = () => {
                 id="sortFilter"
                 value={!sortFilter ? "newest" : "oldest"}
                 onChange={(e) => {
-                  if (e.target.selectedIndex != sortFilter)
-                    setSortFilter(e.target.selectedIndex);
+                  setSortFilter(e.target.selectedIndex);
                 }}
               >
                 <option value="newest">Newest First</option>
