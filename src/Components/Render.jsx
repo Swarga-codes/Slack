@@ -8,6 +8,7 @@ import Thread from "./Thread";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { formatDate } from "../utils/formatDate";
+import { getCalendarDate } from "../utils/getCalendarDate";
 import SearchItem from "./SearchItem";
 const label = { inputProps: { "aria-label": "Switch demo" } };
 
@@ -330,8 +331,7 @@ const Render = () => {
                 <input
                   type="date"
                   class="datepicker-input"
-                  // value={dateFilter.from_date}
-
+                  value={getCalendarDate(dateFilter.from_date)}
                   onChange={(event) => {
                     if (!event.target.valueAsNumber) return;
                     setDateFilter({
@@ -348,8 +348,7 @@ const Render = () => {
                 <input
                   type="date"
                   class="datepicker-input"
-                  // value={dateFilter.to_date}
-
+                  value={getCalendarDate(dateFilter.to_date)}
                   onChange={(event) => {
                     setDateFilter({
                       from_date: dateFilter.from_date
