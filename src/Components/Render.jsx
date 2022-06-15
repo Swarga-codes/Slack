@@ -308,9 +308,10 @@ const Render = () => {
             <select
               id="channels"
               name="channels"
-              value={channelFilter}
+              value={channelFilter ? channelFilter : "all"}
               onChange={(e) => {
                 if (e.target.selectedIndex) setChannelFilter(e.target.value);
+                else setChannelFilter("");
               }}
             >
               <option value="all">All channels</option>
