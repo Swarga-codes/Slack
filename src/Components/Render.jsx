@@ -169,10 +169,11 @@ const Render = () => {
                     ?.toLowerCase()
                     .includes(userFilter.split("/")[0].trim().toLowerCase());
 
-                let ts = parseInt(a.ts) * 1000;
+                let ts = (parseInt(a.ts) + 60 * 30 * 11) * 1000; //convert UTC seconds to IST milliseconds
                 valid &=
                   !dateFilter.from_date ||
-                  (ts >= dateFilter.from_date && ts <= dateFilter.to_date);
+                  (ts >= dateFilter.from_date &&
+                    ts < dateFilter.to_date + 1000 * 60 * 60 * 24); //increment to_date by 1 day
 
                 if (valid) return a;
               })
