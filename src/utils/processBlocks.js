@@ -1,7 +1,9 @@
 import { decode } from "html-entities";
 
 export const processBlocks = (blocks, getUserProfile, getEmoji) => {
+  if (!blocks) return;
   blocks = blocks[0].elements;
+  if (!blocks) return;
 
   const processLink = (block) => {
     return (
