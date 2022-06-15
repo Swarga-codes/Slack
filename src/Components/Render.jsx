@@ -331,8 +331,7 @@ const Render = () => {
                 id="sortFilter"
                 value={!sortFilter ? "newest" : "oldest"}
                 onChange={(e) => {
-                  if (e.target.selectedIndex != sortFilter)
-                    setSortFilter(e.target.selectedIndex);
+                  setSortFilter(e.target.selectedIndex);
                 }}
               >
                 <option value="newest">Newest First</option>
