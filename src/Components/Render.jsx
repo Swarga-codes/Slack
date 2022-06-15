@@ -10,6 +10,8 @@ import { useNavigate } from "react-router-dom";
 import { formatDate } from "../utils/formatDate";
 import { getCalendarDate } from "../utils/getCalendarDate";
 import SearchItem from "./SearchItem";
+import TextInput from "react-autocomplete-input";
+import "react-autocomplete-input/dist/bundle.css";
 const label = { inputProps: { "aria-label": "Switch demo" } };
 
 const Render = () => {
@@ -155,7 +157,7 @@ const Render = () => {
                   !userFilter ||
                   a.user_profile.real_name
                     ?.toLowerCase()
-                    .includes(userFilter.toLowerCase());
+                    .includes(userFilter.split("/")[0].trim().toLowerCase());
 
                 let ts = parseInt(a.ts) * 1000;
                 valid &=
@@ -302,11 +304,17 @@ const Render = () => {
               })}
             </select>
             <label htmlFor="">From user</label>
-            <input
-              type="text"
-              placeholder="Display name or id..."
+            <TextInput
+              style={{ marginLeft: "-15px" }}
+              Component={"input"}
+              trigger=""
+              options={Object.entries(users).map(([key, value]) => {
+                return `${value.real_name} / ${key}`;
+              })}
               value={userFilter}
-              onChange={(e) => setUserFilter(e.target.value)}
+              onChange={(val) => setUserFilter(val)}
+              matchAny={true}
+              regex={"^[ a-zA-Z0-9_-]+$"}
             />
             <label htmlFor="">Sort by</label>
             <div>
