@@ -29,8 +29,10 @@ const Render = () => {
   const [masterData, setMasterData] = useState({});
   const [jointData, setJointData] = useState([]);
   const [phraseFilter, setPhraseFilter] = useState("");
+  const [exactPhrase, setExactPhrase] = useState(false);
   const [channelFilter, setChannelFilter] = useState("");
   const [userFilter, setUserFilter] = useState("");
+  const [dateActivator, setDateActivator] = useState(false);
   const [dateFilter, setDateFilter] = useState({ from_date: 0, to_date: 0 });
 
   async function normalFetch(Swarga) {
@@ -152,7 +154,13 @@ const Render = () => {
                 let valid = !a.parent_user_id && a.ts;
                 valid &=
                   !phraseFilter ||
-                  a.text.toLowerCase().includes(phraseFilter.toLowerCase());
+                  (exactPhrase
+                    ? a.text.toLowerCase().includes(phraseFilter.toLowerCase())
+                    : !phraseFilter
+                        .toLowerCase()
+                        .split(" ")
+                        .map((word) => !a.text.toLowerCase().includes(word))
+                        .reduce((partial, next) => partial + next, 0));
                 valid &=
                   !userFilter ||
                   a.user_profile.real_name
@@ -325,49 +333,68 @@ const Render = () => {
             </div>
             <p>
               Match exact phrase
-              <Switch {...label} />
+              <Switch
+                {...label}
+                checked={exactPhrase}
+                onChange={(e) => {
+                  setExactPhrase(e.target.checked);
+                }}
+              />
             </p>
             <div className="byDate">
               Filter by dates
               <span>
-                <Switch {...label} />
+                <Switch
+                  {...label}
+                  checked={dateActivator}
+                  onChange={(e) => {
+                    setDateActivator(e.target.checked);
+                    if (!e.target.checked)
+                      setDateFilter({ from_date: 0, to_date: 0 });
+                  }}
+                />
               </span>
             </div>
-            <div className="calendars">
-              <div className="calendar-block">
-                <text>From Date:</text>
-                <input
-                  type="date"
-                  class="datepicker-input"
-                  value={getCalendarDate(dateFilter.from_date)}
-                  onChange={(event) => {
-                    if (!event.target.valueAsNumber) return;
-                    setDateFilter({
-                      from_date: event.target.valueAsNumber,
-                      to_date: dateFilter.to_date
-                        ? dateFilter.to_date
-                        : event.target.valueAsNumber,
-                    });
-                  }}
-                />
+            {dateActivator ? (
+              <div className="calendars">
+                <div className="calendar-block">
+                  <text>From Date:</text>
+                  <input
+                    type="date"
+                    class="datepicker-input"
+                    value={getCalendarDate(dateFilter.from_date)}
+                    onChange={(event) => {
+                      if (!event.target.valueAsNumber) return;
+                      setDateFilter({
+                        from_date: event.target.valueAsNumber,
+                        to_date: dateFilter.to_date
+                          ? dateFilter.to_date
+                          : event.target.valueAsNumber,
+                      });
+                    }}
+                  />
+                </div>
+                <div className="calendar-block">
+                  <text>To Date:</text>
+                  <input
+                    type="date"
+                    class="datepicker-input"
+                    value={getCalendarDate(dateFilter.to_date)}
+                    onChange={(event) => {
+                      setDateFilter({
+                        from_date: dateFilter.from_date
+                          ? dateFilter.from_date
+                          : event.target.valueAsNumber,
+                        to_date: event.target.valueAsNumber,
+                      });
+                    }}
+                  />
+                </div>
               </div>
-              <div className="calendar-block">
-                <text>To Date:</text>
-                <input
-                  type="date"
-                  class="datepicker-input"
-                  value={getCalendarDate(dateFilter.to_date)}
-                  onChange={(event) => {
-                    setDateFilter({
-                      from_date: dateFilter.from_date
-                        ? dateFilter.from_date
-                        : event.target.valueAsNumber,
-                      to_date: event.target.valueAsNumber,
-                    });
-                  }}
-                />
-              </div>
-            </div>
+            ) : (
+              ""
+            )}
+
             <button className="btn btn-success">Search</button>
           </div>
         </div>
