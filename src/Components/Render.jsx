@@ -188,7 +188,7 @@ const Render = () => {
                 if (!elmt.user_profile) return;
                 return (
                   <SearchItem
-                    channel={!elmt.channelFilter ? elmt.channel : ""}
+                    channel={!channelFilter ? elmt.channel : ""}
                     user={elmt.user_profile?.real_name}
                     blocks={elmt.blocks}
                     attachments={elmt.attachments}
