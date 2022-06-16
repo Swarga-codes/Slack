@@ -1,7 +1,9 @@
 import { useEffect } from "react";
 import * as React from "react";
 import Message from "./Message";
-import { useState } from "react";
+import Popup from 'reactjs-popup';
+import 'reactjs-popup/dist/index.css';
+import { useState, useRef } from "react";
 import Switch from "@mui/material/Switch";
 import "./components.css";
 import Thread from "./Thread";
@@ -36,6 +38,10 @@ const Render = () => {
   const [sortFilter, setSortFilter] = useState(1);
   const [dateActivator, setDateActivator] = useState(false);
   const [dateFilter, setDateFilter] = useState({ from_date: 0, to_date: 0 });
+  const [searchResults, setSearchResults] = useState(false);
+  const ref = useRef();
+  const resize = useRef();
+  const closeTooltip = () => ref.current.close();
 
   async function normalFetch(Swarga) {
     let response = await axios.get(
@@ -122,7 +128,7 @@ const Render = () => {
     if (phraseFilter || channelFilter || userFilter || dateFilter.from_date) {
       return (
         <div className="threadmess">
-          <div className="threadHead">
+         {searchResults===true? <div className="threadHead">
             <div>
               <h1>
                 Search Results
@@ -141,12 +147,16 @@ const Render = () => {
                 setPhraseFilter("");
                 setChannelFilter("");
                 setUserFilter("");
+                searchResults(false);
                 setDateFilter({ from_date: 0, to_date: 0 });
+               
               }}
             >
               <p>X</p>
             </div>
           </div>
+        :
+      <div></div>}
           <div className="ThreadContainer">
             {(channelFilter ? masterData[channelFilter] : jointData)
               .filter((a) => {
@@ -263,7 +273,9 @@ const Render = () => {
           <h1>Slack Archives</h1>
           <p className="breadCrumbs">
             <span onClick={() => navigation(-1)}>All</span>&nbsp; &nbsp; &gt;
-            &nbsp; &nbsp;<span>#{urlLink.split("/").pop()}</span>
+            &nbsp; &nbsp;<span onClick={() => {setThread(false)
+            setThreadCrumb(false)
+            }}>#{urlLink.split("/").pop()}</span>
             {threadCrumb ? (
               <text>&nbsp; &nbsp; &gt; &nbsp; &nbsp; Thread</text>
             ) : (
@@ -271,7 +283,94 @@ const Render = () => {
             )}
           </p>
         </div>
+        <div>
+        <form className="d-flex" role="search" id="Search">
+          <input
+            className="form-control me-2"
+            // onChange={(event) => setQuery(event.target.value)}
+            type="search"
+            placeholder="Search in Slack"
+            aria-label="Search"
+            id="searchBar"
+          />
+          <Popup ref={ref} trigger={<svg data-8y3="true" viewBox="0 0 20 20" className="FilterCategory">
+          <g fill="none" stroke="currentColor" stroke-width="1.5">
+            <circle cx="13.5" cy="4.25" r="1.75"></circle>
+            <path stroke-linecap="round" d="M2.25 4.25h9m4 0h2.5"></path>
+            <circle cx="12.5" cy="15.75" r="1.75"></circle>
+            <path stroke-linecap="round" d="M2.25 15.75h8m4 0h3.5"></path>
+            <circle r="1.75" transform="matrix(-1 0 0 1 6.5 10)"></circle>
+            <path
+              stroke-linecap="round"
+              d="M17.75 10h-9.5M4.5 10H2.25"
+            ></path>
+          </g>
+        </svg>} modal nested>
+          <div className="PopupContent">
+          <div className="PopupHeader">
+          <h1>Filter By</h1>
+          <svg  onClick={closeTooltip} data-8y3="true" viewBox="0 0 20 20" className="FormCross"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="1.5" d="m5.227 5.227 9.546 9.546m0-9.546-9.546 9.546"></path></svg>
+          </div>
+          <div className="PopupPlaceholders">
+          <label htmlFor="">Search For</label>
+          <input
+            type="text"
+            placeholder="Enter phrase..."
+           
+          />
+          <label htmlFor="">In channel</label>
+          <select id="channels" name="channels">
+            <option value="all">All channels</option>
+            <option value="current">{urlLink.split("/").pop()}</option>
+          </select>
+          <label htmlFor="">From user</label>
+          <input
+            type="text"
+            placeholder="Display name or id..."
+           
+          />
+          <label htmlFor="">Sort by</label>
+          <div>
+            <select id="channels" name="channels">
+              <option value="all">Newest First</option>
+              <option value="current">Oldest First</option>
+            </select>
+          </div>
+          <div className="dateFilter">
+          <label>From</label>
+          <input type="date" />
+          <label className="ToDate">To</label>
+          <input type="date" />
+          </div>
+          <p>
+            Match exact phrase
+            <Switch {...label} />
+          </p>
+          <div className="byDate">
+            Filter by dates
+            <span>
+              <Switch {...label} />
+            </span>
+          </div>
+          <div className="PopBtns">
+          <button className="btn btn-dark" onClick={closeTooltip}>Cancel</button>
+          <button className="btn btn-success">Search</button>
+          
 
+          </div>
+          </div>
+          </div>
+
+        </Popup>
+          
+          <svg data-8y3="true" viewBox="0 0 20 20" className="searchIcon">
+            <path
+              fill="currentColor"
+              d="M17.22 18.28a.75.75 0 1 0 1.06-1.06l-1.06 1.06ZM15 9a6 6 0 0 1-6 6v1.5A7.5 7.5 0 0 0 16.5 9H15Zm-6 6a6 6 0 0 1-6-6H1.5A7.5 7.5 0 0 0 9 16.5V15ZM3 9a6 6 0 0 1 6-6V1.5A7.5 7.5 0 0 0 1.5 9H3Zm6-6a6 6 0 0 1 6 6h1.5A7.5 7.5 0 0 0 9 1.5V3Zm4.47 11.53 3.75 3.75 1.06-1.06-3.75-3.75-1.06 1.06Z"
+            ></path>
+          </svg>
+        </form>
+      </div>
         <div className="dropdown">
           <button
             className="btn btn-secondary-toggle"
@@ -303,7 +402,9 @@ const Render = () => {
               type="text"
               placeholder="Enter phrase..."
               value={phraseFilter}
-              onChange={(e) => setPhraseFilter(e.target.value)}
+              onChange={(e) => {
+                setSearchResults(true);
+                setPhraseFilter(e.target.value)}}
             />
             <label htmlFor="">In channel</label>
             <select
@@ -311,6 +412,7 @@ const Render = () => {
               name="channels"
               value={channelFilter ? channelFilter : "all"}
               onChange={(e) => {
+                setSearchResults(true)
                 if (e.target.selectedIndex) setChannelFilter(e.target.value);
                 else setChannelFilter("");
               }}
@@ -329,7 +431,9 @@ const Render = () => {
                 return `${value.real_name} / ${key}`;
               })}
               value={userFilter}
-              onChange={(val) => setUserFilter(val)}
+              onChange={(val) => {
+                setSearchResults(true)
+                setUserFilter(val)}}
               matchAny={true}
               regex={"^[ a-zA-Z0-9_-]+$"}
             />
@@ -340,6 +444,7 @@ const Render = () => {
                 value={!sortFilter ? "newest" : "oldest"}
                 onChange={(e) => {
                   setSortFilter(e.target.selectedIndex);
+                  setSearchResults(true)
                 }}
               >
                 <option value="newest">Newest First</option>
@@ -353,6 +458,7 @@ const Render = () => {
                 checked={exactPhrase}
                 onChange={(e) => {
                   setExactPhrase(e.target.checked);
+                  setSearchResults(true)
                 }}
               />
             </p>
@@ -363,6 +469,7 @@ const Render = () => {
                   {...label}
                   checked={dateActivator}
                   onChange={(e) => {
+                    setSearchResults(true);
                     setDateActivator(e.target.checked);
                     if (!e.target.checked)
                       setDateFilter({ from_date: 0, to_date: 0 });
@@ -416,7 +523,11 @@ const Render = () => {
       </div>
 
       <div className="MessSection">
-        <div className="messageBundle">
+      <div ref={resize} className={thread===true || searchResults===true?"messageBundle":"messageOnly"}>
+      <div className="MessageHeader">
+      <h1># {urlLink.split("/").pop()}</h1>
+      </div>
+      <div className="MessageContainer">
           {channelMessages
             .filter((a) => {
               if (!a.parent_user_id && a.thread_ts) return a;
@@ -496,9 +607,10 @@ const Render = () => {
               return result;
             })}
         </div>
-
+        </div>
         {processSideWindow()}
-      </div>
+    
+    </div>
     </div>
   );
 };
