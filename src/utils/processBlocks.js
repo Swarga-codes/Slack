@@ -1,10 +1,21 @@
 import { decode } from "html-entities";
+import Highlighter from "react-highlight-words";
 
-export const processBlocks = (blocks, getUserProfile, getEmoji) => {
+export const processBlocks = (blocks, getUserProfile, getEmoji, matchArray) => {
   if (!blocks) return;
   blocks = blocks[0].elements;
   if (!blocks) return;
 
+  const processMatching = (block) => {
+    if (!matchArray) return block.text;
+    return (
+      <Highlighter
+        highlightClassName="highlight"
+        searchWords={matchArray}
+        textToHighlight={block.text}
+      />
+    );
+  };
   const processLink = (block) => {
     return (
       <a href={block.url} className="link">
@@ -23,7 +34,7 @@ export const processBlocks = (blocks, getUserProfile, getEmoji) => {
     return decode(getEmoji(block.name));
   };
   const processSection = (block) => {
-    if (block.type === "text") return block.text;
+    if (block.type === "text") return processMatching(block);
     if (block.type === "link") return processLink(block);
     if (block.type === "user") return processMention(block);
     if (block.type === "emoji") return processEmoji(block);

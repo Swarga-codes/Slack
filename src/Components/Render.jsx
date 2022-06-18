@@ -173,10 +173,12 @@ const Render = () => {
                   !phraseFilter ||
                   (exactPhrase
                     ? a.text.toLowerCase().includes(phraseFilter.toLowerCase())
-                    : !phraseFilter
+                    : phraseFilter
                         .toLowerCase()
                         .split(" ")
-                        .map((word) => !a.text.toLowerCase().includes(word))
+                        .map(
+                          (word) => word && a.text.toLowerCase().includes(word)
+                        )
                         .reduce((partial, next) => partial + next, 0));
                 valid &=
                   !userFilter ||
@@ -205,6 +207,9 @@ const Render = () => {
                 if (!elmt.user_profile) return;
                 return (
                   <SearchItem
+                    matchingArray={
+                      exactPhrase ? [phraseFilter] : phraseFilter.split(" ")
+                    }
                     channel={!channelFilter ? elmt.channel : ""}
                     user={elmt.user_profile?.real_name}
                     blocks={elmt.blocks}
