@@ -1,13 +1,15 @@
 export const SearchLoading = () => {
   return (
     <>
-      Search is Loading{" "}
+      <label style={{ color: "white", marginRight: "10px" }}>
+        Search is Loading
+      </label>
       <svg
         width="50"
         height="20"
         viewBox="0 0 120 30"
         xmlns="http://www.w3.org/2000/svg"
-        fill="#000"
+        fill="#fff"
       >
         <circle cx="15" cy="15" r="15">
           <animate
