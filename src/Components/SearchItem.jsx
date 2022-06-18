@@ -22,7 +22,12 @@ const SearchItem = (props) => {
           </h5>
 
           <p className="card-text">
-            {processBlocks(props.blocks, props.getUserProfile, props.getEmoji)}
+            {processBlocks(
+              props.blocks,
+              props.getUserProfile,
+              props.getEmoji,
+              props.matchingArray
+            )}
           </p>
 
           {processAttachments(props.attachments)}
