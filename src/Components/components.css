@@ -51,6 +51,20 @@ html {
   font-size: 16px;
 }
 
+.message-link-button {
+  margin-bottom: 0px !important;
+  margin-left: 20px;
+  background-color: transparent;
+  font-size: small;
+  font-weight: 200;
+  color: rgb(200, 200, 200);
+  border: gray 1px solid;
+}
+
+.message-link-button:hover {
+  text-decoration: underline;
+}
+
 .Card {
   border: none;
   display: flex;

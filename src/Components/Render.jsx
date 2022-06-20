@@ -607,6 +607,7 @@ const Render = () => {
                       key={element.ts}
                       ts={element.ts}
                       focused={focusMessage}
+                      link={`${window.location.origin}/${currentChannel}/${element.ts}`}
                     />
                     {element.thread_ts ? (
                       <button
