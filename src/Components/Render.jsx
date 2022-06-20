@@ -431,7 +431,6 @@ const Render = () => {
                     <label htmlFor="">From user</label>
                     <TextInput
                       placeholder="Display name or id..."
-                      style={{ marginLeft: "-15px" }}
                       Component={"input"}
                       trigger=""
                       options={Object.entries(users).map(([key, value]) => {
