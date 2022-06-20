@@ -606,6 +606,8 @@ const Render = () => {
                       thread={element.thread_ts > 1 ? element.thread_ts : 0}
                       ref={refs[element.ts]}
                       key={element.ts}
+                      ts={element.ts}
+                      focused={focusMessage}
                     />
                     {element.thread_ts ? (
                       <button

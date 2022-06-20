@@ -58,6 +58,8 @@ html {
   margin-top: 1rem;
   width: 55%;
   margin-bottom: 1rem !important;
+  width: fit-content;
+  height: fit-content;
 }
 
 .ren {

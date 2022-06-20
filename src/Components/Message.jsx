@@ -4,8 +4,10 @@ import { processBlocks } from "../utils/processBlocks";
 import { processAttachments } from "../utils/processAttachments";
 
 const Message = React.forwardRef((props, ref) => {
+  const outerStyle =
+    props.focused === props.ts ? { backgroundColor: "rgb(50,50,50)" } : {};
   return (
-    <div className="Card mb-5" ref={ref}>
+    <div className="Card mb-5" ref={ref} style={outerStyle}>
       <div>
         <img src={props.avatar} className="card-img-top" alt="..." />
       </div>
