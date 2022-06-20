@@ -19,7 +19,6 @@ const label = { inputProps: { "aria-label": "Switch demo" } };
 
 const Render = ({ jointData, masterData, channels, users, emojis }) => {
   const navigation = useNavigate();
-  var urlLink = window.location.href;
   const [currentChannel, setCurrentChannel] = useState("");
   const [channelMessages, setChannelMessages] = useState([]);
   const [refs, setRefs] = useState({});
@@ -98,12 +97,13 @@ const Render = ({ jointData, masterData, channels, users, emojis }) => {
   };
 
   useEffect(() => {
+    const urlLink = window.location.href;
     const channel = urlLink.split("/")[3];
     setCurrentChannel(channel);
 
     const focus = urlLink.split("/")[4];
     if (focus) setFocusMessage(focus);
-  }, []);
+  }, [window.location.href]);
 
   const processSideWindow = () => {
     if (searchResults) {
@@ -194,13 +194,7 @@ const Render = ({ jointData, masterData, channels, users, emojis }) => {
                     avatar={elmt.user_profile?.image_72}
                     key={elmt.ts}
                     focusMe={() => {
-                      setCurrentChannel(elmt.channel);
-                      setFocusMessage(elmt.ts);
-                      window.history.pushState(
-                        {},
-                        "",
-                        `/${elmt.channel}/${elmt.ts}`
-                      );
+                      navigation(`/${elmt.channel}/${elmt.ts}`);
                     }}
                   />
                 );
