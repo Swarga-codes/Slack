@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, createRef } from "react";
 import * as React from "react";
 import Message from "./Message";
 import Popup from "reactjs-popup";
@@ -20,7 +20,10 @@ const label = { inputProps: { "aria-label": "Switch demo" } };
 const Render = () => {
   const navigation = useNavigate();
   var urlLink = window.location.href;
+  const [currentChannel, setCurrentChannel] = useState("");
   const [channelMessages, setChannelMessages] = useState([]);
+  const [refs, setRefs] = useState({});
+  const [focusMessage, setFocusMessage] = useState("");
   const [components, setComponents] = useState([]);
   const [uniquei, setUniquei] = useState([]);
   const [uniquec, setUniquec] = useState([]);
@@ -50,14 +53,34 @@ const Render = () => {
     setSearchResults(false);
   };
 
-  async function normalFetch(Swarga) {
-    let response = await axios.get(
-      `https://slackbackend.taparia11.repl.co/api/data/dynamic/collections/${Swarga}`
-    );
-    console.log(response);
-    let data = await response.data;
+  useEffect(() => {
+    if (!focusMessage) return;
+    if (!refs[focusMessage]) return;
+    refs[focusMessage].current.scrollIntoView({
+      behaviour: "smooth",
+      block: "start",
+    });
+  }, [focusMessage, refs]);
+
+  const messageFetch = async () => {
+    let data;
+    if (!masterData[currentChannel]) {
+      let response = await axios.get(
+        `https://slackbackend.taparia11.repl.co/api/data/dynamic/collections/${currentChannel}`
+      );
+      data = response.data;
+    } else {
+      data = masterData[currentChannel];
+    }
     setChannelMessages(data);
-  }
+
+    const messageRefs = {};
+    data.forEach((nx) => (messageRefs[nx.ts] = createRef()));
+    setRefs(messageRefs);
+  };
+  useEffect(() => {
+    messageFetch(currentChannel);
+  }, [currentChannel]);
 
   const channelFetch = async () => {
     const response = await axios.get(
@@ -123,12 +146,15 @@ const Render = () => {
   }
 
   useEffect(() => {
-    const channel = urlLink.split("/").pop();
-    normalFetch(channel);
+    const channel = urlLink.split("/")[3];
+    setCurrentChannel(channel);
     channelFetch();
     userFetch();
     emojiFetch();
     masterDataFetch();
+
+    const focus = urlLink.split("/")[4];
+    if (focus) setFocusMessage(focus);
   }, []);
 
   const processSideWindow = () => {
@@ -219,6 +245,15 @@ const Render = () => {
                     time={parseInt(iTime + fTime)}
                     avatar={elmt.user_profile?.image_72}
                     key={elmt.ts}
+                    focusMe={() => {
+                      setCurrentChannel(elmt.channel);
+                      setFocusMessage(elmt.ts);
+                      window.history.pushState(
+                        {},
+                        "",
+                        `/${elmt.channel}/${elmt.ts}`
+                      );
+                    }}
                   />
                 );
               })}
@@ -290,7 +325,7 @@ const Render = () => {
                 setThreadCrumb(false);
               }}
             >
-              #{urlLink.split("/").pop()}
+              #{currentChannel}
             </span>
             {threadCrumb ? (
               <text>&nbsp; &nbsp; &gt; &nbsp; &nbsp; Thread</text>
@@ -396,7 +431,6 @@ const Render = () => {
                     <label htmlFor="">From user</label>
                     <TextInput
                       placeholder="Display name or id..."
-                      style={{ marginLeft: "-15px" }}
                       Component={"input"}
                       trigger=""
                       options={Object.entries(users).map(([key, value]) => {
@@ -516,7 +550,7 @@ const Render = () => {
           className={thread || searchResults ? "messageBundle" : "messageOnly"}
         >
           <div className="MessageHeader">
-            <h1># {urlLink.split("/").pop()}</h1>
+            <h1># {currentChannel}</h1>
           </div>
           <div className="MessageContainer">
             {channelMessages
@@ -569,6 +603,11 @@ const Render = () => {
                       avatar={element.user_profile.image_72}
                       data={channelMessages}
                       thread={element.thread_ts > 1 ? element.thread_ts : 0}
+                      ref={refs[element.ts]}
+                      key={element.ts}
+                      ts={element.ts}
+                      focused={focusMessage}
+                      link={`${window.location.origin}/${currentChannel}/${element.ts}`}
                     />
                     {element.thread_ts ? (
                       <button
