@@ -24,10 +24,12 @@ const Render = ({ jointData, masterData, channels, users, emojis }) => {
   const [refs, setRefs] = useState({});
   const [focusMessage, setFocusMessage] = useState("");
   const [components, setComponents] = useState([]);
+
   const [uniquei, setUniquei] = useState([]);
   const [uniquec, setUniquec] = useState([]);
   const [threadCrumb, setThreadCrumb] = useState(false);
-  const [thread, setThread] = useState(false);
+  const [thread, setThread] = useState(0);
+
   const [phraseFilter, setPhraseFilter] = useState("");
   const [exactPhrase, setExactPhrase] = useState(false);
   const [channelFilter, setChannelFilter] = useState("");
@@ -35,7 +37,8 @@ const Render = ({ jointData, masterData, channels, users, emojis }) => {
   const [sortFilter, setSortFilter] = useState(1);
   const [dateActivator, setDateActivator] = useState(false);
   const [dateFilter, setDateFilter] = useState({ from_date: 0, to_date: 0 });
-  const [searchResults, setSearchResults] = useState(false);
+  const [searchResults, setSearchResults] = useState(0);
+
   const ref = useRef();
   const resize = useRef();
   const closeTooltip = () => {
@@ -44,7 +47,7 @@ const Render = ({ jointData, masterData, channels, users, emojis }) => {
     setChannelFilter("");
     setUserFilter("");
     setDateFilter({ from_date: 0, to_date: 0 });
-    setSearchResults(false);
+    setSearchResults(0);
   };
 
   useEffect(() => {
@@ -93,7 +96,7 @@ const Render = ({ jointData, masterData, channels, users, emojis }) => {
       e.currentTarget.className.slice(10, e.currentTarget.className.length)
     );
     setThreadCrumb(true);
-    setThread(true);
+    setThread(Date.now());
   };
 
   useEffect(() => {
@@ -106,7 +109,7 @@ const Render = ({ jointData, masterData, channels, users, emojis }) => {
   }, [window.location.href]);
 
   const processSideWindow = () => {
-    if (searchResults) {
+    if (searchResults > thread) {
       return (
         <div className="threadmess">
           <div className="threadHead">
@@ -128,7 +131,7 @@ const Render = ({ jointData, masterData, channels, users, emojis }) => {
                 setPhraseFilter("");
                 setChannelFilter("");
                 setUserFilter("");
-                setSearchResults(false);
+                setSearchResults(0);
                 setDateFilter({ from_date: 0, to_date: 0 });
               }}
             >
@@ -214,7 +217,7 @@ const Render = ({ jointData, masterData, channels, users, emojis }) => {
             <div
               className="cross"
               onClick={() => {
-                setThread(false);
+                setThread(0);
                 setThreadCrumb(false);
               }}
             >
@@ -263,7 +266,7 @@ const Render = ({ jointData, masterData, channels, users, emojis }) => {
             &nbsp; &nbsp; &gt; &nbsp; &nbsp;
             <span
               onClick={() => {
-                setThread(false);
+                setThread(0);
                 setThreadCrumb(false);
               }}
             >
@@ -284,7 +287,7 @@ const Render = ({ jointData, masterData, channels, users, emojis }) => {
                 value={phraseFilter}
                 onChange={(event) => {
                   setPhraseFilter(event.target.value);
-                  setSearchResults(event.target.value ? true : false);
+                  setSearchResults(event.target.value ? Date.now() : false);
                 }}
                 type="search"
                 placeholder="Search in Slack"
@@ -462,7 +465,7 @@ const Render = ({ jointData, masterData, channels, users, emojis }) => {
                       <button
                         className="btn btn-success"
                         onClick={() => {
-                          setSearchResults(true);
+                          setSearchResults(Date.now());
                           ref.current.close();
                         }}
                       >
