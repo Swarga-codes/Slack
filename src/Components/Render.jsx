@@ -17,9 +17,8 @@ import TextInput from "react-autocomplete-input";
 import "react-autocomplete-input/dist/bundle.css";
 const label = { inputProps: { "aria-label": "Switch demo" } };
 
-const Render = () => {
+const Render = ({ jointData, masterData, channels, users, emojis }) => {
   const navigation = useNavigate();
-  var urlLink = window.location.href;
   const [currentChannel, setCurrentChannel] = useState("");
   const [channelMessages, setChannelMessages] = useState([]);
   const [refs, setRefs] = useState({});
@@ -29,11 +28,6 @@ const Render = () => {
   const [uniquec, setUniquec] = useState([]);
   const [threadCrumb, setThreadCrumb] = useState(false);
   const [thread, setThread] = useState(false);
-  const [channels, setChannels] = useState([]);
-  const [users, setUsers] = useState({});
-  const [emojis, setEmojis] = useState({});
-  const [masterData, setMasterData] = useState({});
-  const [jointData, setJointData] = useState([]);
   const [phraseFilter, setPhraseFilter] = useState("");
   const [exactPhrase, setExactPhrase] = useState(false);
   const [channelFilter, setChannelFilter] = useState("");
@@ -82,58 +76,15 @@ const Render = () => {
     messageFetch(currentChannel);
   }, [currentChannel]);
 
-  const channelFetch = async () => {
-    const response = await axios.get(
-      "https://slackbackend.taparia11.repl.co/api/data/fetchallchannel"
-    );
-    setChannels(response.data);
-  };
-
-  const emojiFetch = async () => {
-    const result = await axios.get(
-      "https://slackbackend.taparia11.repl.co/api/data/fetchallemoji"
-    );
-    setEmojis(result.data[0]);
-  };
   const getEmoji = (name) => {
     return emojis[name];
   };
 
-  const userFetch = async () => {
-    const result = await axios.get(
-      "https://slackbackend.taparia11.repl.co/api/data/fetchallusers"
-    );
-
-    let map = {};
-    for (const user of await result.data) {
-      map[user.id] = user;
-    }
-    setUsers(map);
-  };
   const getUserProfile = (id) => {
     return users[id];
   };
 
-  const masterDataFetch = async () => {
-    const result = await axios.get(
-      "https://slackbackend.taparia11.repl.co/api/data/dynamic/collections/allData"
-    );
-
-    const master = {};
-    for (const d of result.data.messages) master[d.name] = d.messages;
-    setMasterData(master);
-
-    const collective = [];
-    Object.entries(master).map(([key, value]) =>
-      value.map((message) => {
-        message.channel = key;
-        collective.push(message);
-      })
-    );
-    setJointData(collective);
-  };
-
-  function addComponent(e) {
+  const addComponent = (e) => {
     e.preventDefault();
 
     setComponents(channelMessages);
@@ -143,19 +94,16 @@ const Render = () => {
     );
     setThreadCrumb(true);
     setThread(true);
-  }
+  };
 
   useEffect(() => {
+    const urlLink = window.location.href;
     const channel = urlLink.split("/")[3];
     setCurrentChannel(channel);
-    channelFetch();
-    userFetch();
-    emojiFetch();
-    masterDataFetch();
 
     const focus = urlLink.split("/")[4];
     if (focus) setFocusMessage(focus);
-  }, []);
+  }, [window.location.href]);
 
   const processSideWindow = () => {
     if (searchResults) {
@@ -246,13 +194,7 @@ const Render = () => {
                     avatar={elmt.user_profile?.image_72}
                     key={elmt.ts}
                     focusMe={() => {
-                      setCurrentChannel(elmt.channel);
-                      setFocusMessage(elmt.ts);
-                      window.history.pushState(
-                        {},
-                        "",
-                        `/${elmt.channel}/${elmt.ts}`
-                      );
+                      navigation(`/${elmt.channel}/${elmt.ts}`);
                     }}
                   />
                 );
@@ -315,10 +257,10 @@ const Render = () => {
     <div className="dataContent">
       <div className="archive">
         <div>
-          <h1>Slack Archives</h1>
+          <h1 onClick={() => navigation("/")}>Slack Archives</h1>
           <p className="breadCrumbs">
-            <span onClick={() => navigation(-1)}>All</span>&nbsp; &nbsp; &gt;
-            &nbsp; &nbsp;
+            <span onClick={() => navigation("/")}>All</span>
+            &nbsp; &nbsp; &gt; &nbsp; &nbsp;
             <span
               onClick={() => {
                 setThread(false);
