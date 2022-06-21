@@ -17,7 +17,10 @@ const App = () => {
     );
 
     const master = {};
-    for (const d of result.data.messages) master[d.name] = d.messages;
+    for (const d of result.data.messages)
+      master[d.name] = d.messages.filter((a) => {
+        if (a.blocks) return a;
+      });
     setMasterData(master);
 
     const collective = [];
