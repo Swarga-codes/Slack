@@ -277,7 +277,7 @@ const Render = ({ jointData, masterData, channels, users, emojis }) => {
                     ref={refs[elmt.ts]}
                     ts={elmt.ts}
                     focused={focusMessage}
-                    link={`${window.location.origin}/${currentChannel}/${elmt.ts}`}
+                    link={`${window.location.origin}/${currentChannel}/${elmt.ts}/${elmt.thread_ts}`}
                   />
                 );
               })}
