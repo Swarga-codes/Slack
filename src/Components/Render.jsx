@@ -210,7 +210,7 @@ const Render = ({ jointData, masterData, channels, users, emojis }) => {
                     getEmoji={getEmoji}
                     time={parseInt(iTime + fTime)}
                     avatar={elmt.user_profile?.image_72}
-                    key={elmt.ts}
+                    key={elmt.ts + elmt.channel}
                     focusMe={() => {
                       navigation(
                         `/${elmt.channel}/${elmt.ts}` +
@@ -324,15 +324,15 @@ const Render = ({ jointData, masterData, channels, users, emojis }) => {
                     viewBox="0 0 20 20"
                     className="FilterCategory"
                   >
-                    <g fill="none" stroke="currentColor" stroke-width="1.5">
+                    <g fill="none" stroke="currentColor" strokeWidth="1.5">
                       <circle cx="13.5" cy="4.25" r="1.75"></circle>
                       <path
-                        stroke-linecap="round"
+                        strokeLinecap="round"
                         d="M2.25 4.25h9m4 0h2.5"
                       ></path>
                       <circle cx="12.5" cy="15.75" r="1.75"></circle>
                       <path
-                        stroke-linecap="round"
+                        strokeLinecap="round"
                         d="M2.25 15.75h8m4 0h3.5"
                       ></path>
                       <circle
@@ -340,7 +340,7 @@ const Render = ({ jointData, masterData, channels, users, emojis }) => {
                         transform="matrix(-1 0 0 1 6.5 10)"
                       ></circle>
                       <path
-                        stroke-linecap="round"
+                        strokeLinecap="round"
                         d="M17.75 10h-9.5M4.5 10H2.25"
                       ></path>
                     </g>
@@ -361,8 +361,8 @@ const Render = ({ jointData, masterData, channels, users, emojis }) => {
                       <path
                         fill="none"
                         stroke="currentColor"
-                        stroke-linecap="round"
-                        stroke-width="1.5"
+                        strokeLinecap="round"
+                        strokeWidth="1.5"
                         d="m5.227 5.227 9.546 9.546m0-9.546-9.546 9.546"
                       ></path>
                     </svg>
@@ -391,7 +391,12 @@ const Render = ({ jointData, masterData, channels, users, emojis }) => {
                       <option value="all">All channels</option>
                       {channels.map((channel) => {
                         return (
-                          <option value={channel.name}>{channel.name}</option>
+                          <option
+                            key={"option-" + channel.name}
+                            value={channel.name}
+                          >
+                            {channel.name}
+                          </option>
                         );
                       })}
                     </select>
@@ -544,7 +549,7 @@ const Render = ({ jointData, masterData, channels, users, emojis }) => {
 
                 if (idx === 0 || detectChange())
                   result.push(
-                    <div className="date">
+                    <div className="date" key={element.ts + "date-change"}>
                       <text>{cur}</text>
                     </div>
                   );
@@ -555,49 +560,47 @@ const Render = ({ jointData, masterData, channels, users, emojis }) => {
                 var fTime = element.thread_ts.slice(11, 14).toString();
 
                 result.push(
-                  <>
-                    <Message
-                      nreq={channelMessages.length}
-                      userid={element.user}
-                      user={element.user_profile?.real_name}
-                      blocks={element.blocks}
-                      attachments={element.attachments}
-                      getUserProfile={getUserProfile}
-                      getEmoji={getEmoji}
-                      time={element.thread_ts.slice(0, 10)}
-                      time1={parseInt(iTime + fTime)}
-                      avatar={element.user_profile?.image_72}
-                      data={channelMessages}
-                      thread={element.thread_ts > 1 ? element.thread_ts : 0}
-                      ref={refs[element.ts]}
-                      key={element.ts}
-                      ts={element.ts}
-                      focused={focusMessage}
-                      link={`${window.location.origin}/${currentChannel}/${element.ts}`}
-                    />
-                    {element.thread_ts ? (
-                      <button
-                        className={`ThreadBtn ${element.user}`}
-                        onClick={() => addComponent(element.thread_ts)}
-                      >
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          id="MessIcon"
-                          width="16"
-                          height="16"
-                          fill="currentColor"
-                          class="bi bi-chat-left-fill"
-                          viewBox="0 0 16 16"
-                        >
-                          <path d="M2 0a2 2 0 0 0-2 2v12.793a.5.5 0 0 0 .854.353l2.853-2.853A1 1 0 0 1 4.414 12H14a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z" />
-                        </svg>
-                        {element.reply_users_count} Replies
-                      </button>
-                    ) : (
-                      <h4></h4>
-                    )}
-                  </>
+                  <Message
+                    nreq={channelMessages.length}
+                    userid={element.user}
+                    user={element.user_profile?.real_name}
+                    blocks={element.blocks}
+                    attachments={element.attachments}
+                    getUserProfile={getUserProfile}
+                    getEmoji={getEmoji}
+                    time={element.thread_ts.slice(0, 10)}
+                    time1={parseInt(iTime + fTime)}
+                    avatar={element.user_profile?.image_72}
+                    data={channelMessages}
+                    thread={element.thread_ts > 1 ? element.thread_ts : 0}
+                    ref={refs[element.ts]}
+                    key={element.ts}
+                    ts={element.ts}
+                    focused={focusMessage}
+                    link={`${window.location.origin}/${currentChannel}/${element.ts}`}
+                  />
                 );
+                if (element.thread_ts)
+                  result.push(
+                    <button
+                      className={`ThreadBtn ${element.user}`}
+                      onClick={() => addComponent(element.thread_ts)}
+                      key={"thread-btn" + element.ts}
+                    >
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        id="MessIcon"
+                        width="16"
+                        height="16"
+                        fill="currentColor"
+                        className="bi bi-chat-left-fill"
+                        viewBox="0 0 16 16"
+                      >
+                        <path d="M2 0a2 2 0 0 0-2 2v12.793a.5.5 0 0 0 .854.353l2.853-2.853A1 1 0 0 1 4.414 12H14a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z" />
+                      </svg>
+                      {element.reply_users_count} Replies
+                    </button>
+                  );
 
                 return result;
               })}
