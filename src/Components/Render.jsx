@@ -49,6 +49,8 @@ const Render = ({ jointData, masterData, channels, users, emojis }) => {
     setUserFilter("");
     setDateFilter({ from_date: 0, to_date: 0 });
     setSearchResults(0);
+    setFocusMessage("");
+    setInThread("");
   };
 
   useEffect(() => {
@@ -68,7 +70,7 @@ const Render = ({ jointData, masterData, channels, users, emojis }) => {
         block: "start",
       });
     }
-  }, [focusMessage, refs, inThread]);
+  }, [focusMessage, refs, inThread, thread]);
 
   const messageFetch = async () => {
     let data;
@@ -150,6 +152,8 @@ const Render = ({ jointData, masterData, channels, users, emojis }) => {
                 setUserFilter("");
                 setSearchResults(0);
                 setDateFilter({ from_date: 0, to_date: 0 });
+                setFocusMessage("");
+                setInThread("");
               }}
             >
               <p>X</p>
@@ -235,6 +239,8 @@ const Render = ({ jointData, masterData, channels, users, emojis }) => {
               onClick={() => {
                 setThread(0);
                 setThreadCrumb(false);
+                setFocusMessage("");
+                setInThread("");
               }}
             >
               <p>X</p>
@@ -288,6 +294,8 @@ const Render = ({ jointData, masterData, channels, users, emojis }) => {
               onClick={() => {
                 setThread(0);
                 setThreadCrumb(false);
+                setFocusMessage("");
+                setInThread("");
               }}
             >
               #{currentChannel}
@@ -308,6 +316,10 @@ const Render = ({ jointData, masterData, channels, users, emojis }) => {
                 onChange={(event) => {
                   setPhraseFilter(event.target.value);
                   setSearchResults(event.target.value ? Date.now() : false);
+                  if (!event.target.value) {
+                    setFocusMessage("");
+                    setInThread("");
+                  }
                 }}
                 type="search"
                 placeholder="Search in Slack"
