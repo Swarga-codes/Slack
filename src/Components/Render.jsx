@@ -78,7 +78,9 @@ const Render = ({ jointData, masterData, channels, users, emojis }) => {
       let response = await axios.get(
         `https://slackbackend.taparia11.repl.co/api/data/dynamic/collections/${currentChannel}`
       );
-      data = response.data;
+      data = response.data.filter((a) => {
+        if (a.blocks) return a;
+      });
     } else {
       data = masterData[currentChannel];
     }
@@ -539,11 +541,9 @@ const Render = ({ jointData, masterData, channels, users, emojis }) => {
           <div className="MessageContainer">
             {channelMessages
               .filter((a) => {
-                if (!a.parent_user_id && a.thread_ts) return a;
+                if (!a.parent_user_id && a.ts) return a;
               })
               .sort((a, b) => {
-                if (!a.ts) return 1;
-                if (!b.ts) return -1;
                 return parseInt(a.ts) - parseInt(b.ts);
               })
               .map((element, idx, channelMessages) => {
@@ -568,8 +568,8 @@ const Render = ({ jointData, masterData, channels, users, emojis }) => {
 
                 if (!element.user_profile)
                   element.user_profile = getUserProfile(element.user);
-                var iTime = element.thread_ts.slice(0, 10).toString();
-                var fTime = element.thread_ts.slice(11, 14).toString();
+                var iTime = element.ts.slice(0, 10).toString();
+                var fTime = element.ts.slice(11, 14).toString();
 
                 result.push(
                   <Message
@@ -580,7 +580,7 @@ const Render = ({ jointData, masterData, channels, users, emojis }) => {
                     attachments={element.attachments}
                     getUserProfile={getUserProfile}
                     getEmoji={getEmoji}
-                    time={element.thread_ts.slice(0, 10)}
+                    time={element.ts.slice(0, 10)}
                     time1={parseInt(iTime + fTime)}
                     avatar={element.user_profile?.image_72}
                     data={channelMessages}
