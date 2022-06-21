@@ -21,13 +21,16 @@ const Render = ({ jointData, masterData, channels, users, emojis }) => {
   const navigation = useNavigate();
   const [currentChannel, setCurrentChannel] = useState("");
   const [channelMessages, setChannelMessages] = useState([]);
+  const [threadParentTs, setThreadParentTs] = useState({});
   const [refs, setRefs] = useState({});
   const [focusMessage, setFocusMessage] = useState("");
+  const [inThread, setInThread] = useState("");
+
   const [components, setComponents] = useState([]);
   const [uniquei, setUniquei] = useState([]);
-  const [uniquec, setUniquec] = useState([]);
   const [threadCrumb, setThreadCrumb] = useState(false);
-  const [thread, setThread] = useState(false);
+  const [thread, setThread] = useState(0);
+
   const [phraseFilter, setPhraseFilter] = useState("");
   const [exactPhrase, setExactPhrase] = useState(false);
   const [channelFilter, setChannelFilter] = useState("");
@@ -35,7 +38,8 @@ const Render = ({ jointData, masterData, channels, users, emojis }) => {
   const [sortFilter, setSortFilter] = useState(1);
   const [dateActivator, setDateActivator] = useState(false);
   const [dateFilter, setDateFilter] = useState({ from_date: 0, to_date: 0 });
-  const [searchResults, setSearchResults] = useState(false);
+  const [searchResults, setSearchResults] = useState(0);
+
   const ref = useRef();
   const resize = useRef();
   const closeTooltip = () => {
@@ -44,17 +48,29 @@ const Render = ({ jointData, masterData, channels, users, emojis }) => {
     setChannelFilter("");
     setUserFilter("");
     setDateFilter({ from_date: 0, to_date: 0 });
-    setSearchResults(false);
+    setSearchResults(0);
+    setFocusMessage("");
+    setInThread("");
   };
 
   useEffect(() => {
-    if (!focusMessage) return;
-    if (!refs[focusMessage]) return;
-    refs[focusMessage].current.scrollIntoView({
-      behaviour: "smooth",
-      block: "start",
-    });
-  }, [focusMessage, refs]);
+    if (!focusMessage || !refs[focusMessage]) return;
+
+    if (!refs[focusMessage].current) {
+      if (!inThread || !refs[threadParentTs[inThread]]) return;
+
+      refs[threadParentTs[inThread]].current?.scrollIntoView({
+        behaviour: "smooth",
+        block: "start",
+      });
+      addComponent(inThread);
+    } else {
+      refs[focusMessage].current.scrollIntoView({
+        behaviour: "smooth",
+        block: "start",
+      });
+    }
+  }, [focusMessage, refs, inThread, thread]);
 
   const messageFetch = async () => {
     let data;
@@ -62,11 +78,19 @@ const Render = ({ jointData, masterData, channels, users, emojis }) => {
       let response = await axios.get(
         `https://slackbackend.taparia11.repl.co/api/data/dynamic/collections/${currentChannel}`
       );
-      data = response.data;
+      data = response.data.filter((a) => {
+        if (a.blocks) return a;
+      });
     } else {
       data = masterData[currentChannel];
     }
     setChannelMessages(data);
+
+    const threadp = {};
+    data.forEach((nx) => {
+      if (!nx.parent_user_id && nx.thread_ts) threadp[nx.thread_ts] = nx.ts;
+    });
+    setThreadParentTs(threadp);
 
     const messageRefs = {};
     data.forEach((nx) => (messageRefs[nx.ts] = createRef()));
@@ -84,16 +108,13 @@ const Render = ({ jointData, masterData, channels, users, emojis }) => {
     return users[id];
   };
 
-  const addComponent = (e) => {
-    e.preventDefault();
-
-    setComponents(channelMessages);
-    setUniquei(e.target.id);
-    setUniquec(
-      e.currentTarget.className.slice(10, e.currentTarget.className.length)
+  const addComponent = (id) => {
+    setUniquei(id);
+    setComponents(
+      masterData[currentChannel] ? masterData[currentChannel] : channelMessages
     );
     setThreadCrumb(true);
-    setThread(true);
+    setThread(Date.now());
   };
 
   useEffect(() => {
@@ -102,17 +123,20 @@ const Render = ({ jointData, masterData, channels, users, emojis }) => {
     setCurrentChannel(channel);
 
     const focus = urlLink.split("/")[4];
-    if (focus) setFocusMessage(focus);
+    setFocusMessage(focus);
+
+    const thread = urlLink.split("/")[5];
+    setInThread(thread);
   }, [window.location.href]);
 
   const processSideWindow = () => {
-    if (searchResults) {
+    if (searchResults > thread) {
       return (
         <div className="threadmess">
           <div className="threadHead">
             <div>
               <h1>
-                Search Results
+                Search Results (Showing top 200)
                 {channelFilter && channelFilter.length ? (
                   <text className="search-channel">
                     &nbsp; &nbsp; #{channelFilter}
@@ -128,8 +152,10 @@ const Render = ({ jointData, masterData, channels, users, emojis }) => {
                 setPhraseFilter("");
                 setChannelFilter("");
                 setUserFilter("");
-                setSearchResults(false);
+                setSearchResults(0);
                 setDateFilter({ from_date: 0, to_date: 0 });
+                setFocusMessage("");
+                setInThread("");
               }}
             >
               <p>X</p>
@@ -140,9 +166,8 @@ const Render = ({ jointData, masterData, channels, users, emojis }) => {
             {(channelFilter ? masterData[channelFilter] : jointData)
               .filter((a) => {
                 if (!a.user_profile) a.user_profile = getUserProfile(a.user);
-                if (!a.user_profile || !a.thread_ts) return;
 
-                let valid = !a.parent_user_id && a.ts;
+                let valid = a.ts != 0;
                 valid &=
                   !phraseFilter ||
                   (exactPhrase
@@ -153,10 +178,10 @@ const Render = ({ jointData, masterData, channels, users, emojis }) => {
                         .map(
                           (word) => word && a.text.toLowerCase().includes(word)
                         )
-                        .reduce((partial, next) => partial + next, 0));
+                        .reduce((partial, next) => partial || next, false));
                 valid &=
                   !userFilter ||
-                  a.user_profile.real_name
+                  a.user_profile?.real_name
                     ?.toLowerCase()
                     .includes(userFilter.split("/")[0].trim().toLowerCase());
 
@@ -173,12 +198,11 @@ const Render = ({ jointData, masterData, channels, users, emojis }) => {
                   (sortFilter ? 1 : -1) * (parseInt(a.ts) - parseInt(b.ts))
                 );
               })
-              .map((elmt) => {
+              .map((elmt, idx) => {
+                if (idx >= 200) return;
+
                 var iTime = elmt.ts.slice(0, 10).toString();
                 var fTime = elmt.ts.slice(11, 14).toString();
-                if (!elmt.user_profile)
-                  elmt.user_profile = getUserProfile(elmt.user);
-                if (!elmt.user_profile) return;
                 return (
                   <SearchItem
                     matchingArray={
@@ -192,9 +216,12 @@ const Render = ({ jointData, masterData, channels, users, emojis }) => {
                     getEmoji={getEmoji}
                     time={parseInt(iTime + fTime)}
                     avatar={elmt.user_profile?.image_72}
-                    key={elmt.ts}
+                    key={elmt.ts + elmt.channel}
                     focusMe={() => {
-                      navigation(`/${elmt.channel}/${elmt.ts}`);
+                      navigation(
+                        `/${elmt.channel}/${elmt.ts}` +
+                          (elmt.parent_user_id ? "/" + elmt.thread_ts : "")
+                      );
                     }}
                   />
                 );
@@ -214,8 +241,10 @@ const Render = ({ jointData, masterData, channels, users, emojis }) => {
             <div
               className="cross"
               onClick={() => {
-                setThread(false);
+                setThread(0);
                 setThreadCrumb(false);
+                setFocusMessage("");
+                setInThread("");
               }}
             >
               <p>X</p>
@@ -224,27 +253,31 @@ const Render = ({ jointData, masterData, channels, users, emojis }) => {
           <div className="ThreadContainer">
             {components
               .filter((a) => {
-                if (uniquei == a.thread_ts && uniquec == a.parent_user_id)
+                if (uniquei == a.thread_ts && a.parent_user_id && a.ts)
                   return a;
               })
               .sort((a, b) => {
-                if (!a.ts) return 1;
-                if (!b.ts) return -1;
                 return parseInt(a.ts) - parseInt(b.ts);
               })
               .map((elmt) => {
                 var iTime = elmt.ts.slice(0, 10).toString();
                 var fTime = elmt.ts.slice(11, 14).toString();
+                if (!elmt.user_profile)
+                  elmt.user_profile = getUserProfile(elmt.user);
                 return (
                   <Thread
-                    user={elmt.user_profile.real_name}
+                    user={elmt.user_profile?.real_name}
                     blocks={elmt.blocks}
                     attachments={elmt.attachments}
                     getUserProfile={getUserProfile}
                     getEmoji={getEmoji}
                     time={parseInt(iTime + fTime)}
-                    avatar={elmt.user_profile.image_72}
+                    avatar={elmt.user_profile?.image_72}
                     key={elmt.ts}
+                    ref={refs[elmt.ts]}
+                    ts={elmt.ts}
+                    focused={focusMessage}
+                    link={`${window.location.origin}/${currentChannel}/${elmt.ts}`}
                   />
                 );
               })}
@@ -263,8 +296,10 @@ const Render = ({ jointData, masterData, channels, users, emojis }) => {
             &nbsp; &nbsp; &gt; &nbsp; &nbsp;
             <span
               onClick={() => {
-                setThread(false);
+                setThread(0);
                 setThreadCrumb(false);
+                setFocusMessage("");
+                setInThread("");
               }}
             >
               #{currentChannel}
@@ -284,7 +319,11 @@ const Render = ({ jointData, masterData, channels, users, emojis }) => {
                 value={phraseFilter}
                 onChange={(event) => {
                   setPhraseFilter(event.target.value);
-                  setSearchResults(event.target.value ? true : false);
+                  setSearchResults(event.target.value ? Date.now() : false);
+                  if (!event.target.value) {
+                    setFocusMessage("");
+                    setInThread("");
+                  }
                 }}
                 type="search"
                 placeholder="Search in Slack"
@@ -299,15 +338,15 @@ const Render = ({ jointData, masterData, channels, users, emojis }) => {
                     viewBox="0 0 20 20"
                     className="FilterCategory"
                   >
-                    <g fill="none" stroke="currentColor" stroke-width="1.5">
+                    <g fill="none" stroke="currentColor" strokeWidth="1.5">
                       <circle cx="13.5" cy="4.25" r="1.75"></circle>
                       <path
-                        stroke-linecap="round"
+                        strokeLinecap="round"
                         d="M2.25 4.25h9m4 0h2.5"
                       ></path>
                       <circle cx="12.5" cy="15.75" r="1.75"></circle>
                       <path
-                        stroke-linecap="round"
+                        strokeLinecap="round"
                         d="M2.25 15.75h8m4 0h3.5"
                       ></path>
                       <circle
@@ -315,7 +354,7 @@ const Render = ({ jointData, masterData, channels, users, emojis }) => {
                         transform="matrix(-1 0 0 1 6.5 10)"
                       ></circle>
                       <path
-                        stroke-linecap="round"
+                        strokeLinecap="round"
                         d="M17.75 10h-9.5M4.5 10H2.25"
                       ></path>
                     </g>
@@ -336,8 +375,8 @@ const Render = ({ jointData, masterData, channels, users, emojis }) => {
                       <path
                         fill="none"
                         stroke="currentColor"
-                        stroke-linecap="round"
-                        stroke-width="1.5"
+                        strokeLinecap="round"
+                        strokeWidth="1.5"
                         d="m5.227 5.227 9.546 9.546m0-9.546-9.546 9.546"
                       ></path>
                     </svg>
@@ -366,7 +405,12 @@ const Render = ({ jointData, masterData, channels, users, emojis }) => {
                       <option value="all">All channels</option>
                       {channels.map((channel) => {
                         return (
-                          <option value={channel.name}>{channel.name}</option>
+                          <option
+                            key={"option-" + channel.name}
+                            value={channel.name}
+                          >
+                            {channel.name}
+                          </option>
                         );
                       })}
                     </select>
@@ -462,7 +506,7 @@ const Render = ({ jointData, masterData, channels, users, emojis }) => {
                       <button
                         className="btn btn-success"
                         onClick={() => {
-                          setSearchResults(true);
+                          setSearchResults(Date.now());
                           ref.current.close();
                         }}
                       >
@@ -497,11 +541,9 @@ const Render = ({ jointData, masterData, channels, users, emojis }) => {
           <div className="MessageContainer">
             {channelMessages
               .filter((a) => {
-                if (!a.parent_user_id && a.thread_ts) return a;
+                if (!a.parent_user_id && a.ts) return a;
               })
               .sort((a, b) => {
-                if (!a.ts) return 1;
-                if (!b.ts) return -1;
                 return parseInt(a.ts) - parseInt(b.ts);
               })
               .map((element, idx, channelMessages) => {
@@ -519,62 +561,58 @@ const Render = ({ jointData, masterData, channels, users, emojis }) => {
 
                 if (idx === 0 || detectChange())
                   result.push(
-                    <div className="date">
+                    <div className="date" key={element.ts + "date-change"}>
                       <text>{cur}</text>
                     </div>
                   );
 
                 if (!element.user_profile)
                   element.user_profile = getUserProfile(element.user);
-                if (!element.user_profile) return;
-                var iTime = element.thread_ts.slice(0, 10).toString();
-                var fTime = element.thread_ts.slice(11, 14).toString();
+                var iTime = element.ts.slice(0, 10).toString();
+                var fTime = element.ts.slice(11, 14).toString();
 
                 result.push(
-                  <>
-                    <Message
-                      nreq={channelMessages.length}
-                      userid={element.user}
-                      user={element.user_profile.real_name}
-                      blocks={element.blocks}
-                      attachments={element.attachments}
-                      getUserProfile={getUserProfile}
-                      getEmoji={getEmoji}
-                      time={element.thread_ts.slice(0, 10)}
-                      time1={parseInt(iTime + fTime)}
-                      avatar={element.user_profile.image_72}
-                      data={channelMessages}
-                      thread={element.thread_ts > 1 ? element.thread_ts : 0}
-                      ref={refs[element.ts]}
-                      key={element.ts}
-                      ts={element.ts}
-                      focused={focusMessage}
-                      link={`${window.location.origin}/${currentChannel}/${element.ts}`}
-                    />
-                    {element.thread_ts ? (
-                      <button
-                        className={`ThreadBtn ${element.user}`}
-                        id={`${element.thread_ts}`}
-                        onClick={addComponent}
-                      >
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          id="MessIcon"
-                          width="16"
-                          height="16"
-                          fill="currentColor"
-                          class="bi bi-chat-left-fill"
-                          viewBox="0 0 16 16"
-                        >
-                          <path d="M2 0a2 2 0 0 0-2 2v12.793a.5.5 0 0 0 .854.353l2.853-2.853A1 1 0 0 1 4.414 12H14a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z" />
-                        </svg>
-                        {element.reply_users_count} Replies
-                      </button>
-                    ) : (
-                      <h4></h4>
-                    )}
-                  </>
+                  <Message
+                    nreq={channelMessages.length}
+                    userid={element.user}
+                    user={element.user_profile?.real_name}
+                    blocks={element.blocks}
+                    attachments={element.attachments}
+                    getUserProfile={getUserProfile}
+                    getEmoji={getEmoji}
+                    time={element.ts.slice(0, 10)}
+                    time1={parseInt(iTime + fTime)}
+                    avatar={element.user_profile?.image_72}
+                    data={channelMessages}
+                    thread={element.thread_ts > 1 ? element.thread_ts : 0}
+                    ref={refs[element.ts]}
+                    key={element.ts}
+                    ts={element.ts}
+                    focused={focusMessage}
+                    link={`${window.location.origin}/${currentChannel}/${element.ts}`}
+                  />
                 );
+                if (element.thread_ts)
+                  result.push(
+                    <button
+                      className={`ThreadBtn ${element.user}`}
+                      onClick={() => addComponent(element.thread_ts)}
+                      key={"thread-btn" + element.ts}
+                    >
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        id="MessIcon"
+                        width="16"
+                        height="16"
+                        fill="currentColor"
+                        className="bi bi-chat-left-fill"
+                        viewBox="0 0 16 16"
+                      >
+                        <path d="M2 0a2 2 0 0 0-2 2v12.793a.5.5 0 0 0 .854.353l2.853-2.853A1 1 0 0 1 4.414 12H14a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z" />
+                      </svg>
+                      {element.reply_users_count} Replies
+                    </button>
+                  );
 
                 return result;
               })}

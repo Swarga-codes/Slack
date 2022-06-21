@@ -7,31 +7,32 @@ export const processBlocks = (blocks, getUserProfile, getEmoji, matchArray) => {
   if (!blocks) return;
 
   const processMatching = (block) => {
-    if (!matchArray) return block.text;
+    if (!matchArray) return <text key={Math.random()}>{block.text}</text>;
     return (
       <Highlighter
         highlightClassName="highlight"
         searchWords={matchArray}
         textToHighlight={block.text}
+        key={Math.random()}
       />
     );
   };
   const processLink = (block) => {
     return (
-      <a href={block.url} className="link">
+      <a href={block.url} className="link" key={Math.random()}>
         {block.text}
       </a>
     );
   };
   const processMention = (block) => {
     return (
-      <text className="mention">
+      <text className="mention" key={Math.random()}>
         @{getUserProfile(block.user_id)?.real_name}
       </text>
     );
   };
   const processEmoji = (block) => {
-    return decode(getEmoji(block.name));
+    return <text key={Math.random()}>{decode(getEmoji(block.name))}</text>;
   };
   const processSection = (block) => {
     if (block.type === "text") return processMatching(block);
@@ -52,7 +53,7 @@ export const processBlocks = (blocks, getUserProfile, getEmoji, matchArray) => {
         for (const block of el.elements[i].elements)
           res.push(processSection(block));
         result.push(res);
-        result.push("\n");
+        result.push(<text key={Math.random()}>{"\n"}</text>);
       }
     }
   }

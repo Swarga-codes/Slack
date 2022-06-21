@@ -28,10 +28,7 @@ html {
 }
 
 .dataContent {
-  /* margin-top: 2rem; */
   padding: 2rem 0;
-  /* background: #121016; */
-  /* margin-left: mrem; */
   padding-bottom: 0;
   overflow: hidden;
 }
@@ -83,10 +80,6 @@ html {
   height: 86vh;
 }
 
-/* .ren{
-    overflow-y: scroll;
-    height: 100vh;
-} */
 .Card img {
   margin-right: 1rem;
   margin-top: 0.6rem;
@@ -97,18 +90,14 @@ span {
   color: grey;
   font-weight: 600;
   font-size: 14px;
-  /* margin-left: 1rem; */
 }
 
 .thread {
   margin-left: 2rem;
-  /* margin-right: 29rem; */
-  /* width: 2rem; */
   width: 33rem;
 }
 
 .threadmess {
-  /* margin-top: 1rem; */
   margin-left: 0rem;
 }
 
@@ -123,7 +112,6 @@ span {
 }
 
 .ThreadBtn:hover {
-  /* background-color: rgb(182, 212, 250); */
   border-radius: 4px;
   text-decoration: underline;
 }
@@ -187,7 +175,6 @@ span {
 
 #searchBar {
   width: 40rem;
-  /* margin-left: 10rem; */
   height: 26px;
   outline: none;
   border: none;
@@ -201,27 +188,15 @@ span {
 }
 
 .messageBundle {
-  /* height: 78vh;
-  overflow-y: scroll;
-  overflow-x: hidden; */
-  /* width: -webkit-fill-available; */
   box-shadow: 0 4px 8px 0 rgba(0.2, 0.2, 0.2, 0.2);
   transition: 0.3s;
-  /* margin: 1rem;
-  margin-left: 2rem; */
   background-color: rgb(26, 29, 33);
   width: 64.2rem;
 }
 
 .messageOnly {
-  /* height: 78vh;
-  overflow-y: scroll;
-  overflow-x: hidden; */
-  /* width: -webkit-fill-available; */
   box-shadow: 0 4px 8px 0 rgba(0.2, 0.2, 0.2, 0.2);
   transition: 0.3s;
-  /* margin: 1rem;
-  margin-left: 2rem; */
   background-color: rgb(26, 29, 33);
   width: 100%;
 }
@@ -280,91 +255,12 @@ span {
   margin-right: 4rem;
 }
 
-/*Calendar*/
-/*
-.datepicker-toggle {
-  display: inline-block;
-  position: relative;
-  width: 18px;
-  height: 19px;
-}
-
-
-.datepicker-toggle-button {
-  margin-left: 0;
-  position: absolute;
-  margin-bottom: 10px;
-  left: 0;
-  top: 0;
-  width: 100px;
-  height: 100px;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='currentColor' class='bi bi-calendar' viewBox='0 0 16 16'%3E%3Cpath d='M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5zM1 4v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4H1z'/%3E%3C/svg%3E");
-}
-
-.datepicker-input {
-  position: absolute;
-  left: 0;
-  top: 0;
-  width: 100%;
-  height: 100%;
-  opacity: 0;
-  cursor: pointer;
-  box-sizing: border-box;
-}
-
-.datepicker-input::-webkit-calendar-picker-indicator {
-  position: absolute;
-  left: 0;
-  top: 0;
-  width: 100%;
-  height: 100%;
-  margin: 0;
-  padding: 0;
-  cursor: pointer;
-}
-
-.calendars {
-  margin-left: auto;
-  margin-right: -53rem;
-  margin-top: 0.5rem;
-  border: 0.5px solid gray;
-  height: 2.9rem;
-  padding-right: 3rem;
-  padding-top: 0.8rem;
-  border-radius: 6px;
-  width: 2.8rem;
-} */
-
 .btn {
   height: 2.7rem;
   border: 0.5px solid gray;
   margin-top: 0.5rem;
 }
 
-/* .css-5ryogn-MuiButtonBase-root-MuiSwitch-switchBase{
-    color: #1976d2;
-    padding: 0.6rem 0.6rem !important;
-}
-.MuiSwitch-root.MuiSwitch-sizeMedium.css-julti5-MuiSwitch-root {
-    display: -webkit-inline-box;
-    display: -webkit-inline-flex;
-    display: -ms-inline-flexbox;
-    display: inline-flex;
-    width: 5rem;
-    height: 38px;
-    overflow: hidden;
-    padding: 12px;
-    box-sizing: border-box;
-    position: relative;
-    -webkit-flex-shrink: 0;
-    -ms-flex-negative: 0;
-    flex-shrink: 0;
-    z-index: 0;
-    vertical-align: middle;
-}
-.MuiSwitch-root.MuiSwitch-sizeMedium.css-julti5-MuiSwitch-root{
-    margin-left: 1rem;
-} */
 .threadmess img {
   margin-right: 1rem;
   margin-top: 0.6rem;
@@ -382,8 +278,6 @@ span {
   padding: 0rem 1rem;
   box-shadow: 0 4px 8px 0 rgba(0.2, 0.2, 0.2, 0.2);
   transition: 0.3s;
-  /* margin-left: 2rem;
-    margin-right: 2rem; */
   background-color: rgb(26, 29, 33);
 }
 
@@ -392,8 +286,6 @@ span {
   background-color: rgb(26, 29, 33);
   padding: 1rem 1rem;
   padding-bottom: 0.45rem;
-  /* margin-left: 2rem; */
-  /* margin-right: 2rem; */
   box-shadow: 0 1px 0 0 rgb(232, 232, 232, 0.13);
   border: 0.5px solid rgb(232, 232, 232, 0.13);
 }
@@ -419,9 +311,6 @@ span {
   margin-bottom: 0rem;
 }
 
-/* ::-webkit-scrollbar{
-  border-radius: 10px;
-} */
 .date {
   width: 100%;
   text-align: center;
@@ -517,9 +406,6 @@ span {
   font-weight: 600;
 }
 
-/* .threadmess{
-  display: inline-block;
-} */
 .byDate span .MuiSwitch-root.MuiSwitch-sizeMedium.css-julti5-MuiSwitch-root {
   margin-left: 18.3rem;
 }
@@ -540,12 +426,6 @@ span {
   margin-left: 17rem;
 }
 
-/* .css-ecvcn9{
-width: 5rem;
-}
-.byDate .css-ecvcn9{
-  margin-left: 2.5rem;
-} */
 .searchIcon {
   height: 1.2rem;
   margin-top: 0.3rem;
@@ -622,7 +502,6 @@ width: 5rem;
   margin-bottom: 10px;
   padding: 20px 30px;
   display: flex;
-  /* border-bottom: 0.5px solid rgb(232,232,232,0.13); */
 }
 
 .PopupContent input {
@@ -630,10 +509,8 @@ width: 5rem;
   height: 36px;
   background-color: transparent;
   color: rgb(232, 232, 232);
-  /* border: 1px solid rgb(232,232,232,0.13); */
   border-radius: 4px;
   padding: 3px 12px 5px;
-  /* outline: none; */
 }
 
 .PopupContent select {

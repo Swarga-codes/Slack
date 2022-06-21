@@ -4,7 +4,7 @@ export const processAttachments = (attachments) => {
   const result = [];
   for (const attachment of attachments) {
     result.push(
-      <div className="embed">
+      <div className="embed" key={Math.random()}>
         <div>
           <img src={attachment.service_icon} className="embed-service-icon" />
           <text className="embed-service">{attachment.service_name}</text>
