@@ -161,7 +161,7 @@ const Render = ({ jointData, masterData, channels, users, emojis }) => {
               .filter((a) => {
                 if (!a.user_profile) a.user_profile = getUserProfile(a.user);
 
-                let valid = a.ts;
+                let valid = a.ts != 0;
                 valid &=
                   !phraseFilter ||
                   (exactPhrase
@@ -172,7 +172,7 @@ const Render = ({ jointData, masterData, channels, users, emojis }) => {
                         .map(
                           (word) => word && a.text.toLowerCase().includes(word)
                         )
-                        .reduce((partial, next) => partial + next, 0));
+                        .reduce((partial, next) => partial || next, false));
                 valid &=
                   !userFilter ||
                   a.user_profile?.real_name
@@ -195,8 +195,6 @@ const Render = ({ jointData, masterData, channels, users, emojis }) => {
               .map((elmt) => {
                 var iTime = elmt.ts.slice(0, 10).toString();
                 var fTime = elmt.ts.slice(11, 14).toString();
-                if (!elmt.user_profile)
-                  elmt.user_profile = getUserProfile(elmt.user);
                 return (
                   <SearchItem
                     matchingArray={
