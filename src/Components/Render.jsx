@@ -134,7 +134,7 @@ const Render = ({ jointData, masterData, channels, users, emojis }) => {
           <div className="threadHead">
             <div>
               <h1>
-                Search Results
+                Search Results (Showing top 200)
                 {channelFilter && channelFilter.length ? (
                   <text className="search-channel">
                     &nbsp; &nbsp; #{channelFilter}
@@ -196,7 +196,9 @@ const Render = ({ jointData, masterData, channels, users, emojis }) => {
                   (sortFilter ? 1 : -1) * (parseInt(a.ts) - parseInt(b.ts))
                 );
               })
-              .map((elmt) => {
+              .map((elmt, idx) => {
+                if (idx >= 200) return;
+
                 var iTime = elmt.ts.slice(0, 10).toString();
                 var fTime = elmt.ts.slice(11, 14).toString();
                 return (
