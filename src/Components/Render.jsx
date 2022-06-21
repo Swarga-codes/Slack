@@ -21,12 +21,13 @@ const Render = ({ jointData, masterData, channels, users, emojis }) => {
   const navigation = useNavigate();
   const [currentChannel, setCurrentChannel] = useState("");
   const [channelMessages, setChannelMessages] = useState([]);
+  const [threadParentTs, setThreadParentTs] = useState({});
   const [refs, setRefs] = useState({});
   const [focusMessage, setFocusMessage] = useState("");
-  const [components, setComponents] = useState([]);
+  const [inThread, setInThread] = useState("");
 
+  const [components, setComponents] = useState([]);
   const [uniquei, setUniquei] = useState([]);
-  const [uniquec, setUniquec] = useState([]);
   const [threadCrumb, setThreadCrumb] = useState(false);
   const [thread, setThread] = useState(0);
 
@@ -51,13 +52,23 @@ const Render = ({ jointData, masterData, channels, users, emojis }) => {
   };
 
   useEffect(() => {
-    if (!focusMessage) return;
-    if (!refs[focusMessage]) return;
-    refs[focusMessage].current.scrollIntoView({
-      behaviour: "smooth",
-      block: "start",
-    });
-  }, [focusMessage, refs]);
+    if (!focusMessage || !refs[focusMessage]) return;
+
+    if (!refs[focusMessage].current) {
+      if (!inThread || !refs[threadParentTs[inThread]]) return;
+
+      refs[threadParentTs[inThread]].current?.scrollIntoView({
+        behaviour: "smooth",
+        block: "start",
+      });
+      addComponent(inThread);
+    } else {
+      refs[focusMessage].current.scrollIntoView({
+        behaviour: "smooth",
+        block: "start",
+      });
+    }
+  }, [focusMessage, refs, inThread]);
 
   const messageFetch = async () => {
     let data;
@@ -70,6 +81,12 @@ const Render = ({ jointData, masterData, channels, users, emojis }) => {
       data = masterData[currentChannel];
     }
     setChannelMessages(data);
+
+    const threadp = {};
+    data.forEach((nx) => {
+      if (!nx.parent_user_id && nx.thread_ts) threadp[nx.thread_ts] = nx.ts;
+    });
+    setThreadParentTs(threadp);
 
     const messageRefs = {};
     data.forEach((nx) => (messageRefs[nx.ts] = createRef()));
@@ -87,13 +104,10 @@ const Render = ({ jointData, masterData, channels, users, emojis }) => {
     return users[id];
   };
 
-  const addComponent = (e) => {
-    e.preventDefault();
-
-    setComponents(channelMessages);
-    setUniquei(e.target.id);
-    setUniquec(
-      e.currentTarget.className.slice(10, e.currentTarget.className.length)
+  const addComponent = (id) => {
+    setUniquei(id);
+    setComponents(
+      masterData[currentChannel] ? masterData[currentChannel] : channelMessages
     );
     setThreadCrumb(true);
     setThread(Date.now());
@@ -105,7 +119,10 @@ const Render = ({ jointData, masterData, channels, users, emojis }) => {
     setCurrentChannel(channel);
 
     const focus = urlLink.split("/")[4];
-    if (focus) setFocusMessage(focus);
+    setFocusMessage(focus);
+
+    const thread = urlLink.split("/")[5];
+    setInThread(thread);
   }, [window.location.href]);
 
   const processSideWindow = () => {
@@ -143,9 +160,8 @@ const Render = ({ jointData, masterData, channels, users, emojis }) => {
             {(channelFilter ? masterData[channelFilter] : jointData)
               .filter((a) => {
                 if (!a.user_profile) a.user_profile = getUserProfile(a.user);
-                if (!a.user_profile || !a.thread_ts) return;
 
-                let valid = !a.parent_user_id && a.ts;
+                let valid = a.ts;
                 valid &=
                   !phraseFilter ||
                   (exactPhrase
@@ -159,7 +175,7 @@ const Render = ({ jointData, masterData, channels, users, emojis }) => {
                         .reduce((partial, next) => partial + next, 0));
                 valid &=
                   !userFilter ||
-                  a.user_profile.real_name
+                  a.user_profile?.real_name
                     ?.toLowerCase()
                     .includes(userFilter.split("/")[0].trim().toLowerCase());
 
@@ -181,7 +197,6 @@ const Render = ({ jointData, masterData, channels, users, emojis }) => {
                 var fTime = elmt.ts.slice(11, 14).toString();
                 if (!elmt.user_profile)
                   elmt.user_profile = getUserProfile(elmt.user);
-                if (!elmt.user_profile) return;
                 return (
                   <SearchItem
                     matchingArray={
@@ -197,7 +212,10 @@ const Render = ({ jointData, masterData, channels, users, emojis }) => {
                     avatar={elmt.user_profile?.image_72}
                     key={elmt.ts}
                     focusMe={() => {
-                      navigation(`/${elmt.channel}/${elmt.ts}`);
+                      navigation(
+                        `/${elmt.channel}/${elmt.ts}` +
+                          (elmt.parent_user_id ? "/" + elmt.thread_ts : "")
+                      );
                     }}
                   />
                 );
@@ -227,27 +245,31 @@ const Render = ({ jointData, masterData, channels, users, emojis }) => {
           <div className="ThreadContainer">
             {components
               .filter((a) => {
-                if (uniquei == a.thread_ts && uniquec == a.parent_user_id)
+                if (uniquei == a.thread_ts && a.parent_user_id && a.ts)
                   return a;
               })
               .sort((a, b) => {
-                if (!a.ts) return 1;
-                if (!b.ts) return -1;
                 return parseInt(a.ts) - parseInt(b.ts);
               })
               .map((elmt) => {
                 var iTime = elmt.ts.slice(0, 10).toString();
                 var fTime = elmt.ts.slice(11, 14).toString();
+                if (!elmt.user_profile)
+                  elmt.user_profile = getUserProfile(elmt.user);
                 return (
                   <Thread
-                    user={elmt.user_profile.real_name}
+                    user={elmt.user_profile?.real_name}
                     blocks={elmt.blocks}
                     attachments={elmt.attachments}
                     getUserProfile={getUserProfile}
                     getEmoji={getEmoji}
                     time={parseInt(iTime + fTime)}
-                    avatar={elmt.user_profile.image_72}
+                    avatar={elmt.user_profile?.image_72}
                     key={elmt.ts}
+                    ref={refs[elmt.ts]}
+                    ts={elmt.ts}
+                    focused={focusMessage}
+                    link={`${window.location.origin}/${currentChannel}/${elmt.ts}`}
                   />
                 );
               })}
@@ -529,7 +551,6 @@ const Render = ({ jointData, masterData, channels, users, emojis }) => {
 
                 if (!element.user_profile)
                   element.user_profile = getUserProfile(element.user);
-                if (!element.user_profile) return;
                 var iTime = element.thread_ts.slice(0, 10).toString();
                 var fTime = element.thread_ts.slice(11, 14).toString();
 
@@ -538,14 +559,14 @@ const Render = ({ jointData, masterData, channels, users, emojis }) => {
                     <Message
                       nreq={channelMessages.length}
                       userid={element.user}
-                      user={element.user_profile.real_name}
+                      user={element.user_profile?.real_name}
                       blocks={element.blocks}
                       attachments={element.attachments}
                       getUserProfile={getUserProfile}
                       getEmoji={getEmoji}
                       time={element.thread_ts.slice(0, 10)}
                       time1={parseInt(iTime + fTime)}
-                      avatar={element.user_profile.image_72}
+                      avatar={element.user_profile?.image_72}
                       data={channelMessages}
                       thread={element.thread_ts > 1 ? element.thread_ts : 0}
                       ref={refs[element.ts]}
@@ -557,8 +578,7 @@ const Render = ({ jointData, masterData, channels, users, emojis }) => {
                     {element.thread_ts ? (
                       <button
                         className={`ThreadBtn ${element.user}`}
-                        id={`${element.thread_ts}`}
-                        onClick={addComponent}
+                        onClick={() => addComponent(element.thread_ts)}
                       >
                         <svg
                           xmlns="http://www.w3.org/2000/svg"

@@ -2,9 +2,11 @@ import React from "react";
 import { processBlocks } from "../utils/processBlocks";
 import { processAttachments } from "../utils/processAttachments";
 
-const Thread = (props) => {
+const Thread = React.forwardRef((props, ref) => {
+  const outerStyle =
+    props.focused === props.ts ? { backgroundColor: "rgb(50,50,50)" } : {};
   return (
-    <div className="thread">
+    <div className="thread" ref={ref} style={outerStyle}>
       <div className="threadmess">
         <img src={props.avatar} className="card-img-top" alt="..." />
 
@@ -25,6 +27,6 @@ const Thread = (props) => {
       </div>
     </div>
   );
-};
+});
 
 export default Thread;
