@@ -16,6 +16,12 @@ const Thread = React.forwardRef((props, ref) => {
             <span className="card-text">
               <small className="text-muted">{`${new Date(props.time)}`}</small>
             </span>
+            <button
+              className="message-link-button"
+              onClick={() => navigator.clipboard.writeText(props.link)}
+            >
+              Link
+            </button>
           </h5>
 
           <p className="card-text">
