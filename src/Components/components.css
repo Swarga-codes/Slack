@@ -27,6 +27,13 @@ html {
   /* For Chrome, Safari, and Opera */
 }
 
+/* temporary */
+.home-search {
+  margin: 0px;
+  margin-top: 2em;
+  margin-left: 35.5vw;
+}
+
 .dataContent {
   padding: 2rem 0;
   padding-bottom: 0;
